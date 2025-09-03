@@ -54,6 +54,9 @@ dist/
 # VS Code extension package
 *.vsix
 
+# Templates duplicated for VSIX build (source is in src/templates)
+/templates/
+
 # TypeScript cache
 *.tsbuildinfo
 

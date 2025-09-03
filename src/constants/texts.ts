@@ -15,6 +15,25 @@ export const TEXTS = {
         FILE_MERGE_ERROR: "Erro ao mesclar arquivo"
     },
 
+    // Configurações de detecção de projeto
+    DETECTION: {
+        ANGULAR_CORE_DEPENDENCY: '@angular/core',
+        ANGULAR_CLI_DEPENDENCY: '@angular/cli',
+        AUTOMATION_SETTING_KEY: 'angular-assist.automation',
+        PACKAGE_JSON_FILENAME: 'package.json',
+        ANGULAR_JSON_FILENAME: 'angular.json',
+        SETTINGS_JSON_PATH: '.vscode/settings.json',
+        VSCODE_FOLDER: '.vscode'
+    },
+
+    // Arquivos de configuração do VS Code
+    CONFIG_FILES: {
+        SETTINGS: 'settings.json',
+        TASKS: 'tasks.json',
+        LAUNCH: 'launch.json',
+        KEYBINDINGS: 'keybindings.json'
+    },
+
     // Prompts de entrada do usuário
     PROMPTS: {
         PROJECT_NAME: {

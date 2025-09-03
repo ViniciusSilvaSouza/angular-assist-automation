@@ -30,16 +30,16 @@ try {
     $ngVersion = ng version --skip-git 2>$null
     Write-Host "Angular CLI encontrado" -ForegroundColor Green
 } catch {
-    Write-Host "Angular CLI não encontrado. Instalando..." -ForegroundColor Yellow
+    Write-Host "Angular CLI nao encontrado. Instalando..." -ForegroundColor Yellow
     npm install -g @angular/cli
 }
 
-# Verifica se as dependências estão instaladas
+# Verifica se as dependencias estao instaladas
 if (!(Test-Path "node_modules")) {
-    Write-Host "Instalando dependências do projeto..." -ForegroundColor Yellow
+    Write-Host "Instalando dependencias do projeto..." -ForegroundColor Yellow
     npm install
 } else {
-    Write-Host "Dependências já instaladas" -ForegroundColor Green
+    Write-Host "Dependencias ja instaladas" -ForegroundColor Green
 }
 
 # Mata processos na porta especificada se existirem
@@ -62,10 +62,10 @@ if ($processesOnPort) {
 
 # Inicia o servidor de desenvolvimento
 Write-Host "Iniciando servidor de desenvolvimento..." -ForegroundColor Green
-Write-Host "O projeto será aberto em: http://localhost:$Port$Route" -ForegroundColor Cyan
+Write-Host "O projeto sera aberto em: http://localhost:$Port$Route" -ForegroundColor Cyan
 Write-Host ""
 
-# Inicia job para abrir navegador após 8 segundos
+# Inicia job para abrir navegador apos 8 segundos
 $portVar = $Port
 $routeVar = $Route
 Start-Job -ScriptBlock {

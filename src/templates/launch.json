@@ -8,11 +8,8 @@
             "url": "http://localhost:${config:angular-assist.automation.[NOME_PROJETO].port}${config:angular-assist.automation.[NOME_PROJETO].route}",
             "webRoot": "${workspaceFolder}",
             "sourceMaps": true,
-            "userDataDir": "${workspaceFolder}/.vscode/chrome-debug-${config:angular-assist.automation.[NOME_PROJETO].projectName}",
-            "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+            "userDataDir": "${workspaceFolder}/.vscode/chrome-debug-[NOME_PROJETO]",
             "runtimeArgs": [
-                "--user-data-dir=${workspaceFolder}/.vscode/chrome-debug-${config:angular-assist.automation.[NOME_PROJETO].projectName}",
-                "--profile-directory=${config:angular-assist.automation.[NOME_PROJETO].projectName}-Debug",
                 "--new-window",
                 "--no-first-run",
                 "--no-default-browser-check",

@@ -49,5 +49,5 @@ Get-Process -Name "node" -ErrorAction SilentlyContinue | Where-Object {
 Write-Host "Aguardando 3 segundos..." -ForegroundColor Yellow
 Start-Sleep -Seconds 3
 
-# Executa o script principal passando os parâmetros
+# Executa o script principal passando os parametros
 & "$PSScriptRoot\start-projeto.ps1" -ProjectName $ProjectName -Port $Port -DebugPort $DebugPort -Route $Route

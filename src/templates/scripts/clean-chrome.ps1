@@ -27,7 +27,7 @@ Get-Process -Name "chrome" -ErrorAction SilentlyContinue | Where-Object {
 }
 
 if (-not $chromeClosed) {
-    Write-Host "Nenhum processo Chrome específico do projeto encontrado." -ForegroundColor Green
+    Write-Host "Nenhum processo Chrome especifico do projeto encontrado." -ForegroundColor Green
 }
 
 # Limpa diretórios de dados do Chrome se existirem
@@ -38,10 +38,10 @@ if (Test-Path $chromeDataDir) {
         Remove-Item -Path $chromeDataDir -Recurse -Force -ErrorAction SilentlyContinue
         Write-Host "Dados do Chrome limpos." -ForegroundColor Green
     } catch {
-        Write-Host "Aviso: Não foi possível limpar todos os dados do Chrome." -ForegroundColor Yellow
+        Write-Host "Aviso: Nao foi possivel limpar todos os dados do Chrome." -ForegroundColor Yellow
     }
 }
 
 Write-Host ""
-Write-Host "Limpeza de Chrome do projeto $ProjectName concluída!" -ForegroundColor Green
+Write-Host "Limpeza de Chrome do projeto $ProjectName concluida!" -ForegroundColor Green
 Write-Host ""

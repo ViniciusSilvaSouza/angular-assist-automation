@@ -148,7 +148,7 @@ Seguimos [Semantic Versioning](https://semver.org/):
 ### 10. Dúvidas?
 
 - Abra uma Discussion no GitHub
-- Entre em contato: suporte@educadf.com.br
+- Entre em contato: viniciussss@outlook.com.br
 - Consulte a documentação do VS Code Extension API
 
 ## Código de Conduta

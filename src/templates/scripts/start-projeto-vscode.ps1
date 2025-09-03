@@ -15,22 +15,22 @@ param (
 Write-Host "Iniciando o projeto $ProjectName - Angular Assist..." -ForegroundColor Green
 Write-Host ""
 
-# Verifica se o Node.js está instalado
+# Verifica se o Node.js esta instalado
 try {
     $nodeVersion = node --version
     Write-Host "Node.js encontrado: $nodeVersion" -ForegroundColor Green
 } catch {
-    Write-Host "ERRO: Node.js não encontrado. Por favor, instale o Node.js primeiro." -ForegroundColor Red
+    Write-Host "ERRO: Node.js nao encontrado. Por favor, instale o Node.js primeiro." -ForegroundColor Red
     Read-Host "Pressione Enter para sair"
     exit 1
 }
 
-# Verifica se o Angular CLI está instalado
+# Verifica se o Angular CLI esta instalado
 try {
     $ngVersion = ng version --skip-git 2>$null
     Write-Host "Angular CLI encontrado" -ForegroundColor Green
 } catch {
-    Write-Host "Angular CLI não encontrado. Instalando..." -ForegroundColor Yellow
+    Write-Host "Angular CLI nao encontrado. Instalando..." -ForegroundColor Yellow
     npm install -g @angular/cli
     if ($LASTEXITCODE -ne 0) {
         Write-Host "ERRO: Falha ao instalar Angular CLI" -ForegroundColor Red
@@ -38,16 +38,16 @@ try {
     }
 }
 
-# Verifica se as dependências estão instaladas
+# Verifica se as dependencias estao instaladas
 if (!(Test-Path "node_modules")) {
-    Write-Host "Instalando dependências do projeto..." -ForegroundColor Yellow
+    Write-Host "Instalando dependencias do projeto..." -ForegroundColor Yellow
     npm install
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "ERRO: Falha ao instalar dependências" -ForegroundColor Red
+        Write-Host "ERRO: Falha ao instalar dependencias" -ForegroundColor Red
         exit 1
     }
 } else {
-    Write-Host "Dependências já instaladas" -ForegroundColor Green
+    Write-Host "Dependencias ja instaladas" -ForegroundColor Green
 }
 
 # Mata processos na porta especificada se existirem
