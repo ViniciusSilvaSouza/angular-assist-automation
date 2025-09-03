@@ -4,19 +4,19 @@
   "description": "Automação completa de ambiente para projetos Angular com configuração inteligente e scripts otimizados",
   "version": "1.0.0",
   "icon": "images/icon.png",
-  "publisher": "AngularAssist",
+  "publisher": "vinicius-souza",
   "galleryBanner": {
     "color": "#1e1e1e",
     "theme": "dark"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/angular-assist/angular-assist-automation.git"
+    "url": "https://github.com/ViniciusSilvaSouza/angular-assist-automation.git"
   },
   "bugs": {
-    "url": "https://github.com/angular-assist/angular-assist-automation/issues"
+    "url": "https://github.com/ViniciusSilvaSouza/angular-assist-automation/issues"
   },
-  "homepage": "https://github.com/angular-assist/angular-assist-automation#readme",
+  "homepage": "https://github.com/ViniciusSilvaSouza/angular-assist-automation#readme",
   "engines": {
     "vscode": "^1.103.0"
   },
@@ -64,8 +64,8 @@
     "publish": "vsce publish"
   },
   "author": {
-    "name": "Angular Assist",
-    "email": "support@angular-assist.com"
+    "name": "Vinícius Silva Souza",
+    "email": "viniciussss@outlook.com.br"
   },
   "license": "MIT",
   "devDependencies": {

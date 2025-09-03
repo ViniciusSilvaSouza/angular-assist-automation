@@ -5,7 +5,7 @@ Obrigado por considerar contribuir para o projeto Angular Assist - Environment A
 ## Como Contribuir
 
 ### 1. Reportando Bugs
-- Use o [GitHub Issues](https://github.com/angular-assist/angular-assist-automation/issues)
+- Use o [GitHub Issues](https://github.com/ViniciusSilvaSouza/angular-assist-automation/issues)
 - Descreva o problema detalhadamente
 - Inclua passos para reproduzir
 - Especifique versão do VS Code e sistema operacional
@@ -19,7 +19,7 @@ Obrigado por considerar contribuir para o projeto Angular Assist - Environment A
 
 #### Configuração do Ambiente
 ```bash
-git clone https://github.com/angular-assist/angular-assist-automation.git
+git clone https://github.com/ViniciusSilvaSouza/angular-assist-automation.git
 cd angular-assist-automation
 npm install
 ```
