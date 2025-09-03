@@ -6,7 +6,8 @@
     },
     {
         "key": "shift+f5",
-        "command": "educadf-automation.stop-all",
+        "command": "workbench.action.tasks.runTask",
+        "args": "🛑 Stop All Processes",
         "when": "inDebugMode || !inDebugMode"
     },
     {

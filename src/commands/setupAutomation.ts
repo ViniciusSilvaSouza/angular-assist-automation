@@ -5,25 +5,46 @@ import { TEXTS, buildText } from '../constants/texts';
 import { ProjectData, AngularAssistSettings, AngularJson, TasksJson, LaunchJson, VSCodeKeybinding } from '../types';
 
 export async function setupAutomation(context: vscode.ExtensionContext): Promise<void> {
+    // eslint-disable-next-line no-console
+    console.log('🚀 Iniciando setupAutomation...');
+    
     const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
     if (!workspaceFolder) {
         vscode.window.showErrorMessage(TEXTS.ERRORS.NO_WORKSPACE);
         return;
     }
 
+    // eslint-disable-next-line no-console
+    console.log('📁 Workspace encontrado:', workspaceFolder.uri.fsPath);
+
     try {
         // Coleta informações sobre o projeto
+        // eslint-disable-next-line no-console
+        console.log('📝 Coletando dados do projeto...');
         const projectData = await collectProjectData();
-        if (!projectData) return;
+        if (!projectData) {
+            // eslint-disable-next-line no-console
+            console.log('❌ Coleta de dados cancelada pelo usuário');
+            return;
+        }
+
+        // eslint-disable-next-line no-console
+        console.log('✅ Dados coletados:', projectData);
 
         // Criar arquivos de configuração
+        // eslint-disable-next-line no-console
+        console.log('🔧 Criando arquivos de configuração...');
         await createConfigFiles(workspaceFolder.uri.fsPath, projectData, context);
 
+        // eslint-disable-next-line no-console
+        console.log('✅ Configuração concluída com sucesso!');
         vscode.window.showInformationMessage(
             buildText.setupComplete(projectData.projectName)
         );
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : String(error);
+        // eslint-disable-next-line no-console
+        console.error('❌ Erro durante setup:', error);
         vscode.window.showErrorMessage(`Erro: ${errorMessage}`);
     }
 }
@@ -139,33 +160,57 @@ function normalizeRoute(route: string): string {
 }
 
 async function createConfigFiles(workspacePath: string, data: ProjectData, context: vscode.ExtensionContext): Promise<void> {
+    // eslint-disable-next-line no-console
+    console.log('📂 Criando arquivos em:', workspacePath);
+    
     const vscodeDir = path.join(workspacePath, '.vscode');
+    
+    // eslint-disable-next-line no-console
+    console.log('📁 Diretório .vscode:', vscodeDir);
     
     // Criar diretório .vscode se não existir
     if (!fs.existsSync(vscodeDir)) {
+        // eslint-disable-next-line no-console
+        console.log('📁 Criando diretório .vscode...');
         fs.mkdirSync(vscodeDir, { recursive: true });
+    } else {
+        // eslint-disable-next-line no-console
+        console.log('📁 Diretório .vscode já existe');
     }
     
     // Criar diretório global para scripts da extensão (fora do projeto)
     const globalStoragePath = context.globalStorageUri.fsPath;
+    // eslint-disable-next-line no-console
+    console.log('🌐 Global storage path:', globalStoragePath);
+    
     const angularAssistGlobalDir = path.join(globalStoragePath, 'angular-assist-automation');
     if (!fs.existsSync(angularAssistGlobalDir)) {
+        // eslint-disable-next-line no-console
+        console.log('📁 Criando diretório global Angular Assist...');
         fs.mkdirSync(angularAssistGlobalDir, { recursive: true });
     }
     
     // Criar diretório para scripts compartilhados globalmente
     const globalScriptsDir = path.join(angularAssistGlobalDir, 'scripts');
     if (!fs.existsSync(globalScriptsDir)) {
+        // eslint-disable-next-line no-console
+        console.log('📁 Criando diretório global de scripts...');
         fs.mkdirSync(globalScriptsDir, { recursive: true });
     }
 
     // Carregar templates do contexto da extensão
     const templatesPath = path.join(context.extensionPath, 'src', 'templates');
+    // eslint-disable-next-line no-console
+    console.log('📄 Templates path:', templatesPath);
     
     // Criar ou atualizar settings.json com as configurações específicas do projeto
+    // eslint-disable-next-line no-console
+    console.log('⚙️ Atualizando settings.json...');
     await updateSettingsFile(path.join(vscodeDir, 'settings.json'), data, globalScriptsDir);
     
     // Criar tasks.json
+    // eslint-disable-next-line no-console
+    console.log('📋 Criando tasks.json...');
     await createFileFromTemplate(
         path.join(templatesPath, 'tasks.json'),
         path.join(vscodeDir, 'tasks.json'),
@@ -174,6 +219,8 @@ async function createConfigFiles(workspacePath: string, data: ProjectData, conte
     );
 
     // Criar launch.json
+    // eslint-disable-next-line no-console
+    console.log('🚀 Criando launch.json...');
     await createFileFromTemplate(
         path.join(templatesPath, 'launch.json'),
         path.join(vscodeDir, 'launch.json'),
@@ -182,6 +229,8 @@ async function createConfigFiles(workspacePath: string, data: ProjectData, conte
     );
 
     // Criar keybindings.json
+    // eslint-disable-next-line no-console
+    console.log('⌨️ Criando keybindings.json...');
     await createFileFromTemplate(
         path.join(templatesPath, 'keybindings.json'),
         path.join(vscodeDir, 'keybindings.json'),
@@ -191,7 +240,12 @@ async function createConfigFiles(workspacePath: string, data: ProjectData, conte
 
     // Copiar scripts PowerShell para o diretório global compartilhado (apenas uma vez)
     const scriptsTemplatePath = path.join(templatesPath, 'scripts');
+    // eslint-disable-next-line no-console
+    console.log('📜 Copiando scripts PowerShell...');
     await copyScripts(scriptsTemplatePath, globalScriptsDir);
+    
+    // eslint-disable-next-line no-console
+    console.log('✅ Todos os arquivos criados com sucesso!');
 }
 
 async function updateSettingsFile(settingsPath: string, data: ProjectData, globalScriptsDir: string): Promise<void> {

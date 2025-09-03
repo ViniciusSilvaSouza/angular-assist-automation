@@ -44,12 +44,12 @@
     "commands": [
       {
         "command": "angular-assist.detect",
-        "title": "Angular Assist: Detectar Projeto Angular",
+        "title": "🚀 Setup: Angular Assist: Detectar Projeto Angular",
         "category": "Angular Assist"
       },
       {
         "command": "angular-assist.setup",
-        "title": "Angular Assist: Configurar Automação",
+        "title": "🚀 Setup: Angular Assist: Configurar Automação",
         "category": "Angular Assist"
       }
     ]

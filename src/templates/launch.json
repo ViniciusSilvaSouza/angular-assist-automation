@@ -8,23 +8,23 @@
             "url": "http://localhost:${config:angular-assist.automation.[NOME_PROJETO].port}${config:angular-assist.automation.[NOME_PROJETO].route}",
             "webRoot": "${workspaceFolder}",
             "sourceMaps": true,
-            "userDataDir": "${workspaceFolder}/.vscode/chrome-debug-${config:educadf.automation.[NOME_PROJETO].projectName}",
+            "userDataDir": "${workspaceFolder}/.vscode/chrome-debug-${config:angular-assist.automation.[NOME_PROJETO].projectName}",
             "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
             "runtimeArgs": [
-                "--user-data-dir=${workspaceFolder}/.vscode/chrome-debug-${config:educadf.automation.[NOME_PROJETO].projectName}",
-                "--profile-directory=${config:educadf.automation.[NOME_PROJETO].projectName}-Debug",
+                "--user-data-dir=${workspaceFolder}/.vscode/chrome-debug-${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                "--profile-directory=${config:angular-assist.automation.[NOME_PROJETO].projectName}-Debug",
                 "--new-window",
                 "--no-first-run",
                 "--no-default-browser-check",
                 "--disable-sync",
                 "--disable-extensions",
-                "--remote-debugging-port=${config:educadf.automation.[NOME_PROJETO].debugPort}",
+                "--remote-debugging-port=${config:angular-assist.automation.[NOME_PROJETO].debugPort}",
                 "--force-device-scale-factor=1"
             ],
-            "preLaunchTask": "Start Projeto - [NOME_PROJETO] (EducaDF Automation)",
+            "preLaunchTask": "Start Projeto - [NOME_PROJETO] (Angular Assist)",
             "presentation": {
                 "hidden": false,
-                "group": "EducaDF",
+                "group": "Angular Assist",
                 "order": 1
             }
         }

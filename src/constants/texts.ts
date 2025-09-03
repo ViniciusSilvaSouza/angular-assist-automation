@@ -45,8 +45,8 @@ export const TEXTS = {
 
     // Comandos e labels
     COMMANDS: {
-        DETECT_TITLE: 'Angular Assist: Detectar Projeto Angular',
-        SETUP_TITLE: 'Angular Assist: Configurar Automação'
+        DETECT_TITLE: '🚀 Setup Angular Assist: Detectar Projeto Angular',
+        SETUP_TITLE: '🚀 Setup Angular Assist: Configurar Automação'
     },
 
     // Labels de tarefas
