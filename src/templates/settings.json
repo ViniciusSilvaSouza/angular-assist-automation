@@ -1,0 +1,22 @@
+{
+    "angular-assist.automation": {
+        "[NOME_PROJETO]": {
+            "projectName": "[NOME_PROJETO]",
+            "port": "[PORTA]",
+            "debugPort": "[PORTA_DEBUG]",
+            "route": "[ROTA_APLICACAO]",
+            "workspacePath": "[CAMINHO_PROJETO]"
+        }
+    },
+    "files.exclude": {
+        "**/node_modules": true,
+        "**/dist": true,
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true
+    },
+    "typescript.preferences.includePackageJsonAutoImports": "auto",
+    "emmet.includeLanguages": {
+        "typescript": "html"
+    }
+}

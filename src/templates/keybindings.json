@@ -1,0 +1,17 @@
+[
+    {
+        "key": "f5",
+        "command": "workbench.action.debug.start",
+        "when": "!inDebugMode"
+    },
+    {
+        "key": "shift+f5",
+        "command": "educadf-automation.stop-all",
+        "when": "inDebugMode || !inDebugMode"
+    },
+    {
+        "key": "ctrl+f5",
+        "command": "workbench.action.debug.run",
+        "when": "!inDebugMode"
+    }
+]

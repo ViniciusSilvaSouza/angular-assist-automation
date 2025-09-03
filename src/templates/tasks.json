@@ -1,0 +1,190 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start Projeto - [NOME_PROJETO] (Angular Assist)",
+            "type": "shell",
+            "command": "powershell.exe",
+            "args": [
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}\\start-projeto-vscode.ps1",
+                "-ProjectName",
+                "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                "-Port",
+                "${config:angular-assist.automation.[NOME_PROJETO].port}",
+                "-DebugPort",
+                "${config:angular-assist.automation.[NOME_PROJETO].debugPort}",
+                "-Route",
+                "${config:angular-assist.automation.[NOME_PROJETO].route}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "isBackground": true,
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": {
+                "owner": "typescript",
+                "source": "ts",
+                "applyTo": "closedDocuments",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceRoot}"
+                ],
+                "pattern": "$tsc",
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": {
+                        "regexp": "(.*?)"
+                    },
+                    "endsPattern": {
+                        "regexp": "Compiled successfully.|Failed to compile."
+                    }
+                }
+            }
+        },
+        {
+            "label": "🔄 Restart Projeto - [NOME_PROJETO]",
+            "type": "shell",
+            "command": "powershell.exe",
+            "args": [
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}\\restart-projeto.ps1",
+                "-ProjectName",
+                "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                "-Port",
+                "${config:angular-assist.automation.[NOME_PROJETO].port}",
+                "-DebugPort",
+                "${config:angular-assist.automation.[NOME_PROJETO].debugPort}",
+                "-Route",
+                "${config:angular-assist.automation.[NOME_PROJETO].route}"
+            ],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "🛑 Stop All Processes",
+            "type": "shell",
+            "command": "powershell.exe",
+            "args": [
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}\\stop-all-processes.ps1",
+                "-ProjectName",
+                "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                "-Port",
+                "${config:angular-assist.automation.[NOME_PROJETO].port}"
+            ],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": false,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "🌐 Clean Chrome [NOME_PROJETO]",
+            "type": "shell",
+            "command": "powershell.exe",
+            "args": [
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}\\clean-chrome.ps1",
+                "-ProjectName",
+                "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                "-Route",
+                "${config:angular-assist.automation.[NOME_PROJETO].route}"
+            ],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": false,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "ng serve",
+            "type": "shell",
+            "command": "ng",
+            "args": [
+                "serve",
+                "--host",
+                "localhost",
+                "--port",
+                "${config:angular-assist.automation.[NOME_PROJETO].port}"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new"
+            },
+            "problemMatcher": [
+                "$tsc"
+            ]
+        },
+        {
+            "label": "ng build",
+            "type": "shell",
+            "command": "ng",
+            "args": [
+                "build"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$tsc"
+            ]
+        }
+    ]
+}

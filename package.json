@@ -1,0 +1,80 @@
+{
+  "name": "angular-assist-automation",
+  "displayName": "Angular Assist - Environment Automation",
+  "description": "Automação completa de ambiente para projetos Angular com configuração inteligente e scripts otimizados",
+  "version": "1.0.0",
+  "icon": "images/icon.png",
+  "publisher": "AngularAssist",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/angular-assist/angular-assist-automation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/angular-assist/angular-assist-automation/issues"
+  },
+  "homepage": "https://github.com/angular-assist/angular-assist-automation#readme",
+  "engines": {
+    "vscode": "^1.103.0"
+  },
+  "categories": [
+    "Other",
+    "Snippets",
+    "Debuggers"
+  ],
+  "keywords": [
+    "angular",
+    "automation",
+    "environment",
+    "setup",
+    "configuration",
+    "powershell",
+    "typescript",
+    "development",
+    "project"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "angular-assist.detect",
+        "title": "Angular Assist: Detectar Projeto Angular",
+        "category": "Angular Assist"
+      },
+      {
+        "command": "angular-assist.setup",
+        "title": "Angular Assist: Configurar Automação",
+        "category": "Angular Assist"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "watch": "tsc -watch -p ./",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "author": {
+    "name": "Angular Assist",
+    "email": "support@angular-assist.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@types/vscode": "^1.103.0",
+    "@typescript-eslint/eslint-plugin": "^8.42.0",
+    "@typescript-eslint/parser": "^8.42.0",
+    "@vscode/vsce": "^3.6.0",
+    "eslint": "^9.34.0",
+    "typescript": "^5.9.2"
+  }
+}
