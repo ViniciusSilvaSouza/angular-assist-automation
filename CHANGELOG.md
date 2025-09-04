@@ -1,5 +1,29 @@
 # CHANGELOG
 
+## [1.0.2] - 2025-09-04
+
+### Added
+- Command: Angular Assist: Change Language (`angular-assist.changeLanguage`)
+- Configuration setting: `angular-assist.language` (default `en-US`)
+- en-US locale texts and runtime language switching via command and settings
+
+### Changed
+- Default extension language switched to English (en-US)
+- TypeScript config updated: `module` and `moduleResolution` set to `Node16` for stable imports
+
+### Docs
+- README fully translated to English (default)
+- Added `README.pt-BR.md` with full documentation in Portuguese
+
+### Improvements
+- Simplified script copying to always use base `templates/scripts` (stable names)
+- Centralized i18n usage in `changeLanguage.ts` and commands
+- i18n types extracted to `src/types/i18n.ts` for better organization
+
+### Fixes
+- Minor PowerShell message normalization (ASCII) to avoid encoding issues
+- Packaging and template visibility polish
+
 ## [1.0.0] - 2025-09-03
 
 ### Rebrand para Angular Assist - Environment Automation

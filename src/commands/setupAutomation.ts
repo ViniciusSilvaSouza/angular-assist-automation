@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { TEXTS, buildText, getLocale } from '../constants/texts';
+import { TEXTS, buildText } from '../constants/texts';
 import { ProjectData, AngularAssistSettings, AngularJson, TasksJson, LaunchJson, VSCodeKeybinding } from '../types';
 
 export async function setupAutomation(context: vscode.ExtensionContext): Promise<void> {
@@ -512,10 +512,8 @@ async function updateSettingsFile(settingsPath: string, data: ProjectData, globa
 }
 
 async function copyScripts(scriptsPath: string, destDir: string): Promise<void> {
-    // Suporta subpastas por idioma: templates/scripts/<locale>/...
-    const locale = getLocale();
-    const localeScriptsPath = path.join(scriptsPath, locale);
-    const basePath = fs.existsSync(localeScriptsPath) ? localeScriptsPath : scriptsPath;
+    // Always copy from base templates/scripts (scripts names are stable)
+    const basePath = scriptsPath;
 
     const scriptFiles = [
         TEXTS.SCRIPT_FILES.START_VSCODE,
@@ -526,11 +524,11 @@ async function copyScripts(scriptsPath: string, destDir: string): Promise<void> 
     ];
 
     for (const scriptFile of scriptFiles) {
-        const sourcePath = path.join(basePath, scriptFile);
+    const sourcePath = path.join(basePath, scriptFile);
         const destPath = path.join(destDir, scriptFile);
         
         // Copia o arquivo se não existir no destino
-        if (fs.existsSync(sourcePath) && !fs.existsSync(destPath)) {
+    if (fs.existsSync(sourcePath) && !fs.existsSync(destPath)) {
             fs.copyFileSync(sourcePath, destPath);
         }
     }
