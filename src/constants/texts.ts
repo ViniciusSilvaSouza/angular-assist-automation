@@ -1,5 +1,3 @@
-// Arquivo de constantes para textos da interface
-// Centraliza todos os textos exibidos ao usuário e permite i18n (pt-BR/en-US)
 
 import type { Locale, LocaleTexts } from '../types/i18n';
 export type { Locale } from '../types/i18n';
@@ -245,7 +243,6 @@ export const buildText = {
     chromeCleanupComplete: (projectName: string): string => `Limpeza de Chrome do projeto ${projectName} ${TEXTS.SCRIPTS.CHROME_CLEANUP_COMPLETE}`,
     noProcessOnPort: (port: string): string => `${TEXTS.SCRIPTS.NO_PROCESS_ON_PORT} ${port}`,
     processStoppedNamePid: (processName: string, pid: string): string => `${TEXTS.SCRIPTS.PROCESS_STOPPED_NAME_PID} ${processName} (PID: ${pid})`,
-    // Labels de tarefas
     startProjectTask: (projectName: string): string => `${TEXTS.TASKS.START_PROJECT} ${projectName} ${TEXTS.TASKS.START_PROJECT_SUFFIX}`,
     restartProjectTask: (projectName: string): string => `${TEXTS.TASKS.RESTART_PROJECT} ${projectName}`,
     cleanChromeTask: (projectName: string): string => `${TEXTS.TASKS.CLEAN_CHROME} ${projectName}`,

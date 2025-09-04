@@ -16,7 +16,6 @@ export async function changeLanguage(): Promise<void> {
 
     const selected = options.find(o => o.label === pick)?.value ?? 'en-US';
 
-    // Persistir configuração globalmente e atualizar locale atual
     await vscode.workspace.getConfiguration('angular-assist').update('language', selected, vscode.ConfigurationTarget.Global);
     setLocale(selected);
 
