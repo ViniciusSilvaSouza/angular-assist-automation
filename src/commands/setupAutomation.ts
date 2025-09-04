@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { TEXTS, buildText } from '../constants/texts';
+import { TEXTS, buildText, getLocale } from '../constants/texts';
 import { ProjectData, AngularAssistSettings, AngularJson, TasksJson, LaunchJson, VSCodeKeybinding } from '../types';
 
 export async function setupAutomation(context: vscode.ExtensionContext): Promise<void> {
@@ -331,10 +331,10 @@ async function createConfigFiles(workspacePath: string, data: ProjectData, conte
         );
 
         // Copiar scripts PowerShell para o diretório global compartilhado (apenas uma vez)
-        const scriptsTemplatePath = path.join(templatesPath, 'scripts');
+    const scriptsTemplatePath = path.join(templatesPath, 'scripts');
         // eslint-disable-next-line no-console
         console.log('📜 === COPIANDO SCRIPTS POWERSHELL ===');
-        await copyScripts(scriptsTemplatePath, globalScriptsDir);
+    await copyScripts(scriptsTemplatePath, globalScriptsDir);
         
         // eslint-disable-next-line no-console
         console.log('✅ === TODOS OS ARQUIVOS CRIADOS COM SUCESSO! ===');
@@ -512,6 +512,11 @@ async function updateSettingsFile(settingsPath: string, data: ProjectData, globa
 }
 
 async function copyScripts(scriptsPath: string, destDir: string): Promise<void> {
+    // Suporta subpastas por idioma: templates/scripts/<locale>/...
+    const locale = getLocale();
+    const localeScriptsPath = path.join(scriptsPath, locale);
+    const basePath = fs.existsSync(localeScriptsPath) ? localeScriptsPath : scriptsPath;
+
     const scriptFiles = [
         TEXTS.SCRIPT_FILES.START_VSCODE,
         TEXTS.SCRIPT_FILES.START_PROJECT,
@@ -521,7 +526,7 @@ async function copyScripts(scriptsPath: string, destDir: string): Promise<void> 
     ];
 
     for (const scriptFile of scriptFiles) {
-        const sourcePath = path.join(scriptsPath, scriptFile);
+        const sourcePath = path.join(basePath, scriptFile);
         const destPath = path.join(destDir, scriptFile);
         
         // Copia o arquivo se não existir no destino

@@ -1,7 +1,7 @@
 ## 🎉 Angular Assist v1.0.0 - Primeira Release!
 
 ### 📥 Instalação
-1. Baixe o arquivo `angular-assist-automation-1.0.0.vsix` abaixo
+1. Baixe o arquivo `angular-assist-automation-1.0.2.vsix` abaixo
 2. No VS Code: `Ctrl+Shift+P` → `Extensions: Install from VSIX...`
 3. Selecione o arquivo baixado
 

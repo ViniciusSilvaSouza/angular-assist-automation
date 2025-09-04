@@ -1,382 +1,396 @@
 # Angular Assist - Environment Automation
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-1.0.2-blue.svg)](package.json)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![VS Code](https://img.shields.io/badge/VS%20Code-1.103.0+-007ACC.svg)](https://code.visualstudio.com/)
 
-> **Extensão do VS Code para automatizar completamente o ambiente de desenvolvimento de projetos Angular**
+> VS Code extension to fully automate Angular development environments
 
-Uma solução robusta que resolve os desafios de configuração e gerenciamento de múltiplos projetos Angular em ambientes corporativos, oferecendo automação inteligente, scripts compartilhados e configurações padronizadas.
-
----
-
-## 🎯 Por que esta extensão?
-
-### O Problema
-Em ambientes corporativos com múltiplos projetos Angular executando separadamente, desenvolvedores enfrentam:
-
-- **Configuração repetitiva** de tarefas, debug e scripts para cada projeto
-- **Inconsistência** nas configurações entre projetos e desenvolvedores
-- **Perda de tempo** configurando ambiente a cada novo projeto ou workspace
-- **Dificuldade de padronização** de processos de desenvolvimento
-- **Scripts dispersos** e não reutilizáveis entre projetos
-
-### A Solução
-Angular Assist automatiza completamente a configuração do ambiente, criando:
-- ✅ **Configuração única** que se adapta a qualquer projeto Angular
-- ✅ **Scripts globais reutilizáveis** entre todos os projetos
-- ✅ **Padronização automática** de tarefas, debug e keybindings
-- ✅ **Detecção inteligente** de configurações existentes
-- ✅ **Workflow otimizado** para desenvolvimento e debug
+A robust solution that streamlines setup and management of multiple Angular projects in corporate environments by providing smart automation, shared scripts, and standardized configurations.
 
 ---
 
-## 🚀 Funcionalidades
+## 🎯 Why this extension?
 
-### 🔍 **Detecção Inteligente**
-- Detecção automática de projetos Angular ao abrir workspace
-- Leitura dinâmica do `angular.json` para configurações padrão
-- Validação de dependências e estrutura do projeto
+### The problem
+In corporate environments with multiple Angular projects running separately, developers face:
 
-### ⚡ **Configuração Instantânea**
-- Setup completo em menos de 30 segundos
-- Configuração automática de tasks, launch configs e keybindings
-- Scripts PowerShell otimizados para desenvolvimento
+- Repetitive setup of tasks, debug, and scripts per project
+- Inconsistent configurations between projects and developers
+- Time wasted configuring the environment for each new project/workspace
+- Difficulty standardizing development processes
+- Scattered, non-reusable scripts across projects
 
-### 🔄 **Scripts Compartilhados**
-- Scripts globais reutilizáveis entre todos os projetos
-- Gerenciamento inteligente de processos Node.js
-- Limpeza automática de cache e dados temporários
-
-### 🎛️ **Controle Completo**
-- Tasks integradas ao VS Code com atalhos configurados
-- Debug Chrome com configuração automática
-- Restart de projetos sem perder contexto
+### The solution
+Angular Assist fully automates environment setup by creating:
+- ✅ A single configuration that adapts to any Angular project
+- ✅ Reusable global scripts shared across all projects
+- ✅ Automatic standardization of tasks, debug, and keybindings
+- ✅ Smart detection of existing configurations
+- ✅ An optimized workflow for development and debugging
 
 ---
 
-## 📥 Instalação
+## 🚀 Features
 
-### 📦 **Opção 1: Download Direto (Recomendado)**
+### 🔍 Smart detection
+- Automatically detects Angular projects on workspace open
+- Dynamically reads `angular.json` to infer defaults
+- Validates dependencies and project structure
 
-1. **Baixe a extensão**:
-   - Acesse a [página de releases](https://github.com/ViniciusSilvaSouza/angular-assist-automation/releases)
-   - Baixe o arquivo `angular-assist-automation-1.0.0.vsix` da versão mais recente
+### ⚡ Instant setup
+- Complete setup in under 30 seconds
+- Auto-configures tasks, launch configs, and keybindings
+- Optimized PowerShell scripts for development
 
-2. **Instale no VS Code**:
-   ```bash
-   # Via linha de comando
-   code --install-extension angular-assist-automation-1.0.0.vsix
-   ```
+### 🔄 Shared scripts
+- Reusable global scripts shared across all projects
+- Smart management of Node.js processes
+- Automatic cleanup of cache and temporary data
+
+### 🎛️ Full control
+- VS Code Tasks integrated with handy shortcuts
+- Chrome debugging auto-configured
+- Restart projects without losing context
+
+---
+
+## 📥 Installation
+
+### 📦 Option 1: Direct Download (Recommended)
+
+1. Download the extension:
+  - Go to the [releases page](https://github.com/ViniciusSilvaSouza/angular-assist-automation/releases)
+  - Download the `angular-assist-automation-1.0.2.vsix` from the latest release
+
+2. Install in VS Code:
+  ```bash
+  code --install-extension angular-assist-automation-1.0.2.vsix
+  ```
    
-   **OU**
-   
-   - Abra o VS Code
-   - Pressione `Ctrl+Shift+P`
-   - Digite: `Extensions: Install from VSIX...`
-   - Selecione o arquivo `.vsix` baixado
-   - Reinicie o VS Code se solicitado
+  Or:
+  - Open VS Code
+  - Press `Ctrl+Shift+P`
+  - Type: `Extensions: Install from VSIX...`
+  - Select the downloaded `.vsix`
+  - Reload if prompted
 
-### 🔧 **Opção 2: Compilação Local**
+### 🔧 Option 2: Local Build
 
 ```bash
-# 1. Clone o repositório
+# 1. Clone the repo
 git clone https://github.com/ViniciusSilvaSouza/angular-assist-automation.git
 cd angular-assist-automation
 
-# 2. Instale dependências
+# 2. Install dependencies
 npm install
 
-# 3. Compile o projeto
+# 3. Compile the project
 npm run compile
 
-# 4. Gere o pacote VSIX
+# 4. Package VSIX
 npm run package
 
-# 5. Instale a extensão gerada
-code --install-extension angular-assist-automation-1.0.0.vsix
+# 5. Install the generated extension
+code --install-extension angular-assist-automation-1.0.2.vsix
 ```
 
-### ✅ **Verificar Instalação**
-Após a instalação:
-1. Abra um projeto Angular no VS Code
-2. A extensão deve detectar automaticamente e oferecer configuração
-3. Ou use `Ctrl+Shift+P` → `Angular Assist: Configurar Automação`
+### ✅ Verify Installation
+After installing:
+1. Open an Angular project in VS Code
+2. The extension should auto-detect and offer to configure your environment
+3. Or use `Ctrl+Shift+P` → `Angular Assist: Configure Automation`
 
-> 💡 **Dicas Importantes:**
-> - Mantenha o arquivo `.vsix` salvo para reinstalações futuras
-> - A extensão funciona offline após instalada
-> - Para atualizar, baixe a nova versão e reinstale pelo mesmo processo
-> - Verifique as [releases](https://github.com/ViniciusSilvaSouza/angular-assist-automation/releases) regularmente para atualizações
+> Tips:
+> - Keep the `.vsix` file for future reinstalls
+> - Works offline after installation
+> - To update, download the new version and reinstall the `.vsix`
+> - Check the [releases](https://github.com/ViniciusSilvaSouza/angular-assist-automation/releases) for updates
 
 ---
 
-## 🎮 Como Usar
+## 🎮 How to Use
 
-### 🔧 **Setup Automático**
-1. **Abra qualquer projeto Angular** no VS Code
-2. **Aceite a configuração** quando a extensão detectar o projeto
-3. **Preencha as informações** solicitadas (nome, porta, rota)
-4. **Pronto!** Ambiente configurado e pronto para uso
+### 🔧 Automatic Setup
+1. Open any Angular project in VS Code
+2. Accept the configuration prompt when detected
+3. Provide the requested info (name, port, route)
+4. Done! Your environment is ready
 
-### 🎯 **Setup Manual**
+### 🎯 Manual Setup
 ```
-Ctrl+Shift+P → "Angular Assist: Configurar Automação"
+Ctrl+Shift+P → "Angular Assist: Configure Automation"
 ```
 
-### ⌨️ **Atalhos Configurados**
-- **F5** - Iniciar projeto (com debug)
-- **Ctrl+Shift+F5** - Restart projeto
-- **Ctrl+Alt+S** - Stop todos os processos
+### ⌨️ Keybindings
+- **F5** - Start project (with debug)
+- **Ctrl+Shift+F5** - Restart project
+- **Ctrl+Alt+S** - Stop all processes
 
 ---
 
-## 📋 Configuração
+## 📋 Configuration
 
-Durante o setup, você configura:
+During setup, you'll configure:
 
-| Campo | Descrição | Exemplo | Padrão |
-|-------|-----------|---------|--------|
-| **Nome do Projeto** | Identificador único | `meu-projeto-angular` | - |
-| **Porta** | Porta do servidor dev | `4200` | `4200` |
-| **Porta Debug** | Porta do Chrome debug | `9222` | `9222` |
-| **Rota** | Rota base da aplicação | `/estudantes` | auto-detectado |
+| Field | Description | Example | Default |
+|-------|-------------|---------|---------|
+| **Project name** | Unique identifier | `my-angular-project` | - |
+| **Port** | Dev server port | `4200` | `4200` |
+| **Debug port** | Chrome debug port | `9222` | `9222` |
+| **Route** | Application base route | `/students` | auto-detected |
 
-> 💡 **Dica**: A rota é automaticamente lida do `angular.json` quando disponível
+> Tip: The route is auto-read from `angular.json` when available
 
 ---
 
-## 📁 Estrutura Criada
+## 📁 Created Structure
 
-### 🏠 **No Projeto (Workspace)**
+### 🏠 In the project (workspace)
 ```
 .vscode/
-├── tasks.json            # 6 tarefas otimizadas para Angular
-├── launch.json           # Configuração de debug Chrome
-├── keybindings.json      # Atalhos personalizados
-└── settings.json         # Configurações específicas do projeto
+├── tasks.json            # 6 optimized tasks for Angular
+├── launch.json           # Chrome debug configuration
+├── keybindings.json      # Custom keybindings
+└── settings.json         # Project-specific settings
 ```
 
-### 🌐 **Global (Sistema)**
+### 🌐 Global (system)
 ```
 %APPDATA%/Code/User/globalStorage/angular-assist-automation/
-└── scripts/              # Scripts PowerShell compartilhados
-    ├── start-projeto-vscode.ps1    # Iniciar com debug integrado
-    ├── start-projeto.ps1           # Iniciar standalone
-    ├── restart-projeto.ps1         # Restart inteligente
-    ├── stop-all-processes.ps1      # Stop completo e limpeza
-    └── clean-chrome.ps1            # Limpeza de dados Chrome
+└── scripts/              # Shared PowerShell scripts
+  ├── start-projeto-vscode.ps1    # Start with integrated debug
+  ├── start-projeto.ps1           # Standalone start
+  ├── restart-projeto.ps1         # Smart restart
+  ├── stop-all-processes.ps1      # Complete stop and cleanup
+  └── clean-chrome.ps1            # Chrome data cleanup
 ```
 
 ---
 
-## 🛠️ Tarefas Disponíveis
+## 🛠️ Available Tasks
 
-| Tarefa | Atalho | Descrição |
-|--------|--------|-----------|
-| **Start Projeto** | `F5` | Inicia o projeto com debug automático |
-| **🔄 Restart Projeto** | `Ctrl+Shift+F5` | Restart sem perder contexto |
-| **🛑 Stop All Processes** | `Ctrl+Alt+S` | Para todos os processos relacionados |
-| **🌐 Clean Chrome** | - | Limpa dados específicos do projeto |
-| **ng serve** | - | Comando Angular CLI padrão |
-| **ng build** | - | Build de produção |
+| Task | Shortcut | Description |
+|------|----------|-------------|
+| **Start Project** | `F5` | Starts the project with automatic debugging |
+| **🔄 Restart Project** | `Ctrl+Shift+F5` | Restart without losing context |
+| **🛑 Stop All Processes** | `Ctrl+Alt+S` | Stop all related processes |
+| **🌐 Clean Chrome** | - | Clean project-specific data |
+| **ng serve** | - | Standard Angular CLI command |
+| **ng build** | - | Production build |
 
 ---
 
 ## ⚙️ Configurações
 
-### 📝 **settings.json**
+### 🌐 Extension Language
+Default language is English. Change it:
+
+```json
+// settings.json (User or Workspace)
+{
+  "angular-assist.language": "en-US" // or "pt-BR"
+}
+```
+
+Or via command palette:
+
+```
+Ctrl+Shift+P → Angular Assist: Change Language
+```
+
+### 📝 settings.json
 ```json
 {
   "angular-assist.automation": {
-    "meu-projeto": {
-      "projectName": "meu-projeto",
+    "my-project": {
+      "projectName": "my-project",
       "port": "4200",
       "debugPort": "9222", 
-      "route": "/estudantes",
-      "workspacePath": "C:\\Dev\\meu-projeto",
+      "route": "/students",
+      "workspacePath": "C:\\Dev\\my-project",
       "globalScriptsPath": "C:\\Users\\user\\AppData\\...\\scripts"
     }
   }
 }
 ```
 
-### 🎛️ **tasks.json (gerado)**
+### 🎛️ tasks.json (generated)
 ```json
 {
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Start Projeto - meu-projeto (Angular Assist)",
+      "label": "Start Project - my-project (Angular Assist)",
       "type": "shell",
       "command": "powershell.exe",
       "args": ["..."],
       "group": { "kind": "build", "isDefault": true },
       "isBackground": true
     }
-    // ... outras tasks
+    // ... other tasks
   ]
 }
 ```
 
 ---
 
-## 🏗️ Arquitetura
+## 🏗️ Architecture
 
-### 📦 **Estrutura do Código**
+### 📦 Code structure
 ```
 src/
-├── commands/                 # Comandos da extensão
-│   ├── detectProject.ts     # Detecção de projetos Angular
-│   └── setupAutomation.ts   # Configuração automática
-├── constants/               # Constantes e textos
-│   └── texts.ts            # Sistema centralizado de textos
-├── templates/              # Templates de configuração
-│   ├── tasks.json          # Template de tarefas
-│   ├── launch.json         # Template de debug
-│   ├── settings.json       # Template de settings
-│   ├── keybindings.json    # Template de atalhos
-│   └── scripts/            # Scripts PowerShell
-└── types/                  # Definições TypeScript
-    ├── index.ts           # Re-exports centralizados
-    ├── project.ts         # Tipos de projeto
-    ├── vscode.ts          # Tipos VS Code
-    └── packageAndAngular.ts # Tipos package.json/angular.json
+├── commands/                 # Extension commands
+│   ├── detectProject.ts      # Angular project detection
+│   └── setupAutomation.ts    # Automatic setup
+├── constants/                # Constants and texts
+│   └── texts.ts              # Central text system (i18n)
+├── templates/                # Config templates
+│   ├── tasks.json            # Tasks template
+│   ├── launch.json           # Debug template
+│   ├── settings.json         # Settings template
+│   ├── keybindings.json      # Keybindings template
+│   └── scripts/              # PowerShell scripts
+└── types/                    # TypeScript definitions
+  ├── index.ts              # Central re-exports
+  ├── project.ts            # Project types
+  ├── vscode.ts             # VS Code types
+  └── packageAndAngular.ts  # package.json/angular.json types
 ```
 
-### 🧩 **Sistema de Textos**
+### 🧩 Text system
 ```typescript
-// Textos organizados por categoria
+// Texts organized by category
 TEXTS.ERRORS.PROJECT_NOT_FOUND
 TEXTS.PROMPTS.PROJECT_NAME
 TEXTS.MESSAGES.SETUP_COMPLETE
 TEXTS.TASKS.START_PROJECT
 
-// Funções utilitárias
+// Helper functions
 buildText.setupComplete(projectName)
 buildText.startingProject(projectName) 
 ```
 
-### 🔄 **Fluxo de Configuração**
-1. **Detecção** → Verifica se é projeto Angular
-2. **Validação** → Analisa package.json e angular.json  
-3. **Coleta** → Solicita informações do usuário
-4. **Geração** → Cria arquivos de configuração
-5. **Instalação** → Copia scripts globais
-6. **Finalização** → Configura workspace
+### 🔄 Setup flow
+1. Detection → Check if it’s an Angular project
+2. Validation → Analyze package.json and angular.json  
+3. Input → Ask user for project info
+4. Generation → Create configuration files
+5. Installation → Copy global scripts
+6. Finalization → Configure workspace
 
 ---
 
-## 🔧 Desenvolvimento
+## 🔧 Development
 
-### 📋 **Pré-requisitos**
-- **Node.js** 18+ 
-- **npm** 8+
-- **VS Code** 1.103.0+
-- **TypeScript** 5.0+
-- **PowerShell** (Windows)
+### 📋 Prerequisites
+- Node.js 18+
+- npm 8+
+- VS Code 1.103.0+
+- TypeScript 5.0+
+- PowerShell (Windows)
 
-### 🚀 **Setup de Desenvolvimento**
+### 🚀 Dev setup
 ```bash
-# 1. Clone o repositório
+# 1. Clone the repository
 git clone https://github.com/ViniciusSilvaSouza/angular-assist-automation.git
 cd angular-assist-automation
 
-# 2. Instale dependências
+# 2. Install dependencies
 npm install
 
-# 3. Compile em modo watch
+# 3. Compile in watch mode
 npm run watch
 
-# 4. Teste a extensão
-# Pressione F5 no VS Code para abrir instância de desenvolvimento
+# 4. Test the extension
+# Press F5 in VS Code to open the development host
 ```
 
-### 🔍 **Scripts Disponíveis**
+### 🔍 Available scripts
 ```bash
-npm run compile       # Compilar TypeScript
-npm run watch         # Watch mode para desenvolvimento
-npm run lint          # Verificar código com ESLint
-npm run package       # Gerar arquivo .vsix
-npm run publish       # Publicar no marketplace
+npm run compile       # Compile TypeScript
+npm run watch         # Watch mode
+npm run lint          # Lint with ESLint
+npm run package       # Generate .vsix
+npm run publish       # Publish to marketplace
 ```
 
-### 🧪 **Testing**
+### 🧪 Testing
 ```bash
-# Testar em projeto Angular local
-# 1. Abra a extensão em development (F5)
-# 2. Abra um projeto Angular na nova janela
-# 3. Teste as funcionalidades
+# Test with a local Angular project
+# 1. Launch the extension (F5)
+# 2. Open an Angular project in the new window
+# 3. Exercise the features
 ```
 
-### 📦 **Criando Releases**
+### 📦 Creating Releases
 ```bash
-# Para criar uma nova release:
-# 1. Atualize a versão no package.json
-# 2. Compile e gere o VSIX
+# To create a new release:
+# 1. Update the version in package.json
+# 2. Compile and generate the VSIX
 npm run compile
 npm run package
 
-# 3. Crie uma tag no Git
-git tag v1.0.0
-git push origin v1.0.0
+# 3. Create a Git tag
+git tag v1.0.2
+git push origin v1.0.2
 
-# 4. Crie uma release no GitHub com o arquivo .vsix
+# 4. Create a GitHub release with the .vsix
 ```
 
 ---
 
-## 🤝 Contribuição
+## 🤝 Contributing
 
-### 🎯 **Como Contribuir**
+### 🎯 How to contribute
 
-1. **🍴 Fork** o repositório
-2. **🌿 Branch** para sua feature (`git checkout -b feature/AmazingFeature`)
-3. **💾 Commit** suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. **🚀 Push** para a branch (`git push origin feature/AmazingFeature`)
-5. **🔀 Pull Request** para revisão
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'feat: add AmazingFeature'`)
+4. Push the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-### 📝 **Diretrizes**
+### 📝 Guidelines
 
-- ✅ Siga o padrão de código existente
-- ✅ Adicione testes para novas funcionalidades  
-- ✅ Atualize documentação quando necessário
-- ✅ Use commits semânticos (feat:, fix:, docs:)
+- Follow the existing coding style
+- Add tests for new features
+- Update docs when necessary
+- Use semantic commits (feat:, fix:, docs:)
 
-### 🐛 **Reportar Bugs**
+### 🐛 Reporting bugs
 
-Use o [GitHub Issues](https://github.com/ViniciusSilvaSouza/angular-assist-automation/issues) com:
-- Descrição clara do problema
-- Passos para reproduzir
-- Versão do VS Code e da extensão
-- Logs de erro (se houver)
+Use [GitHub Issues](https://github.com/ViniciusSilvaSouza/angular-assist-automation/issues) with:
+- Clear problem description
+- Steps to reproduce
+- VS Code and extension version
+- Error logs (if any)
 
 ---
 
 ## 📊 Roadmap
 
-### 🎯 **v1.0.1** (Próxima versão)
-- [ ] **Publicação no VS Code Marketplace** para instalação direta
-- [ ] Melhorias na documentação baseadas em feedback
-- [ ] Correções de bugs reportados pela comunidade
+### 🎯 v1.0.2
+- [ ] Publish on VS Code Marketplace
+- [ ] Documentation improvements based on feedback
+- [ ] Bug fixes reported by the community
 
-### 🚀 **v1.1.0** (Futuro próximo)
-- [ ] Suporte para workspace multi-root
-- [ ] Configurações por projeto via UI
-- [ ] Templates de projeto customizáveis
-- [ ] Integração com Git hooks
+### 🚀 v1.1.0 (Near future)
+- [ ] Multi-root workspace support
+- [ ] Per-project settings via UI
+- [ ] Customizable project templates
+- [ ] Git hooks integration
 
-### 🌟 **v1.2.0** (Futuro)
-- [ ] Suporte para outros frameworks (React, Vue)
-- [ ] Dashboard de status de projetos
-- [ ] Métricas de desenvolvimento
-- [ ] Sincronização em nuvem
+### 🌟 v1.2.0 (Future)
+- [ ] Support for other frameworks (React, Vue)
+- [ ] Project status dashboard
+- [ ] Development metrics
+- [ ] Cloud sync
 
-### 💡 **Ideias em Avaliação**
-- [ ] Suporte para Docker
-- [ ] Integração com CI/CD
-- [ ] Plugin para outros editores
-- [ ] Modo colaborativo
+### 💡 Ideas under consideration
+- [ ] Docker support
+- [ ] CI/CD integration
+- [ ] Plugins for other editors
+- [ ] Collaborative mode
 
 ---
 
@@ -384,31 +398,31 @@ Use o [GitHub Issues](https://github.com/ViniciusSilvaSouza/angular-assist-autom
 
 ### v1.0.0 (2025-09-03)
 #### ✨ Features
-- ✅ Detecção automática de projetos Angular
-- ✅ Configuração completa de ambiente VS Code
-- ✅ Scripts PowerShell otimizados e reutilizáveis
-- ✅ Sistema de textos centralizados
-- ✅ Leitura dinâmica de configurações
-- ✅ Normalização automática de rotas
-- ✅ 6 tarefas pré-configuradas
-- ✅ Debug integrado com Chrome
-- ✅ Atalhos de teclado personalizados
+- ✅ Auto-detection of Angular projects
+- ✅ Complete VS Code environment setup
+- ✅ Optimized and reusable PowerShell scripts
+- ✅ Centralized text system
+- ✅ Dynamic configuration reading
+- ✅ Automatic route normalization
+- ✅ 6 preconfigured tasks
+- ✅ Integrated Chrome debug
+- ✅ Custom keyboard shortcuts
 
 #### 🏗️ Architecture
-- ✅ Estrutura modular TypeScript
-- ✅ Sistema de tipos organizados
-- ✅ Templates reutilizáveis
-- ✅ Constantes centralizadas
+- ✅ Modular TypeScript structure
+- ✅ Organized type system
+- ✅ Reusable templates
+- ✅ Centralized constants
 
 ---
 
-## 🛡️ Licença
+## 🛡️ License
 
-Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes.
+This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
 
 ---
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
 **Vinícius Silva Souza**
 - GitHub: [@ViniciusSilvaSouza](https://github.com/ViniciusSilvaSouza)
@@ -416,18 +430,18 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](L
 
 ---
 
-## 🙏 Agradecimentos
+## 🙏 Acknowledgements
 
-- Comunidade Angular pela inspiração
-- Equipe do VS Code pelas APIs extensíveis
-- Colegas de trabalho pelos feedbacks valiosos
+- Angular community for the inspiration
+- VS Code team for the extensible APIs
+- Colleagues for valuable feedback
 
 ---
 
 <div align="center">
 
-### ⭐ Se este projeto te ajudou, considere dar uma estrela!
+### ⭐ If this project helped you, please consider giving it a star!
 
-**[⬆ Voltar ao topo](#angular-assist---environment-automation)**
+**[⬆ Back to top](#angular-assist---environment-automation)**
 
 </div>
