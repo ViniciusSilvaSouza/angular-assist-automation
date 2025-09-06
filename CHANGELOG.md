@@ -1,15 +1,20 @@
 # CHANGELOG
 
-## [1.0.2] - 2025-09-04
+## [1.0.2] - 2025-09-06
 
 ### Added
 - Command: Angular Assist: Change Language (`angular-assist.changeLanguage`)
 - Configuration setting: `angular-assist.language` (default `en-US`)
 - en-US locale texts and runtime language switching via command and settings
+- Diagnostics logger using VS Code Output Channel ("Angular Assist").
+- Configuration setting: `angular-assist.debug` (boolean, default `false`) to enable diagnostic logs.
 
 ### Changed
 - Default extension language switched to English (en-US)
 - TypeScript config updated: `module` and `moduleResolution` set to `Node16` for stable imports
+- Removed all `console.*` from source and eliminated `eslint-disable no-console` usage in `src/`.
+- Commands now run inside `try/catch`; on failure, the user sees a `showErrorMessage` and details are written to the logger.
+- Activation and locale-change messages no longer use console logs; info is routed to the Output Channel when appropriate.
 
 ### Docs
 - README fully translated to English (default)
@@ -19,10 +24,14 @@
 - Simplified script copying to always use base `templates/scripts` (stable names)
 - Centralized i18n usage in `changeLanguage.ts` and commands
 - i18n types extracted to `src/types/i18n.ts` for better organization
+- Clearer error strategy: throw on irrecoverable situations and surface user messages only at command entry points.
+- Detection/setup flows quietly handle non-critical JSON read errors (e.g., `package.json`, `.vscode/settings.json`) without noisy developer logs.
 
 ### Fixes
 - Minor PowerShell message normalization (ASCII) to avoid encoding issues
 - Packaging and template visibility polish
+- Resolved ESLint issues (no-console, unused imports, unused catch parameters) and ensured clean TypeScript build.
+- Verified successful compilation via `npm run compile`.
 
 ## [1.0.0] - 2025-09-03
 

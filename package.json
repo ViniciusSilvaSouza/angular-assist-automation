@@ -53,6 +53,11 @@
             "English (United States)"
           ],
           "description": "Idioma usado pela extensão para mensagens e prompts."
+        },
+        "angular-assist.debug": {
+          "type": "boolean",
+          "default": false,
+          "description": "Ativa logs de diagnóstico no Output Channel 'Angular Assist'."
         }
       }
     },

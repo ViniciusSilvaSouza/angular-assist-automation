@@ -1,97 +1,49 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { TEXTS, buildText } from '../constants/texts';
+import { TEXTS, buildText, getLocale } from '../constants/texts';
 import { ProjectData, AngularAssistSettings, AngularJson, TasksJson, LaunchJson, VSCodeKeybinding } from '../types';
 
 export async function setupAutomation(context: vscode.ExtensionContext): Promise<void> {
-    // eslint-disable-next-line no-console
-    console.log('🚀 === INICIANDO SETUP ANGULAR ASSIST ===');
-    
     const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
     if (!workspaceFolder) {
         const errorMsg = TEXTS.ERRORS.NO_WORKSPACE;
-        // eslint-disable-next-line no-console
-        console.error('❌ ERRO:', errorMsg);
         vscode.window.showErrorMessage(errorMsg);
         return;
     }
 
-    // eslint-disable-next-line no-console
-    console.log('📁 Workspace encontrado:', workspaceFolder.uri.fsPath);
-
     try {
-        // Coleta informações sobre o projeto
-        // eslint-disable-next-line no-console
-        console.log('📝 === COLETANDO DADOS DO PROJETO ===');
         const projectData = await collectProjectData();
         if (!projectData) {
-            // eslint-disable-next-line no-console
-            console.log('❌ Coleta de dados cancelada pelo usuário');
-            vscode.window.showWarningMessage('Configuração cancelada pelo usuário.');
+            vscode.window.showWarningMessage(TEXTS.MESSAGES.SETUP_CANCELLED_BY_USER || 'Configuração cancelada pelo usuário.');
             return;
         }
 
-        // eslint-disable-next-line no-console
-        console.log('✅ Dados coletados com sucesso:', JSON.stringify(projectData, null, 2));
-
-        // Criar arquivos de configuração
-        // eslint-disable-next-line no-console
-        console.log('🔧 === CRIANDO ARQUIVOS DE CONFIGURAÇÃO ===');
         await createConfigFiles(workspaceFolder.uri.fsPath, projectData, context);
 
-        // Verificar se os arquivos foram criados corretamente
-        // eslint-disable-next-line no-console
-        console.log('🔍 === VERIFICANDO ARQUIVOS CRIADOS ===');
         const verificationResult = await verifyCreatedFiles(workspaceFolder.uri.fsPath, projectData);
-        
+
         if (verificationResult.success) {
-            // eslint-disable-next-line no-console
-            console.log('✅ === CONFIGURAÇÃO CONCLUÍDA COM SUCESSO! ===');
-            // eslint-disable-next-line no-console
-            console.log('📋 Arquivos criados:', verificationResult.filesCreated);
-            // eslint-disable-next-line no-console
-            console.log('🎯 Debug config encontrada:', verificationResult.debugConfigFound);
-            
             const successMsg = buildText.setupComplete(projectData.projectName);
             vscode.window.showInformationMessage(
                 `${successMsg}\n\n🔍 Verificar:\n• Painel "Run and Debug" (Ctrl+Shift+D)\n• Tarefas no Terminal (Ctrl+Shift+P > Tasks)\n• Configuração criada: ${verificationResult.debugConfigName}`
             );
-            
-            // Sugerir recarregar a janela para garantir que as configurações sejam aplicadas
+
             const reloadChoice = await vscode.window.showInformationMessage(
                 'Para garantir que todas as configurações sejam aplicadas, recomenda-se recarregar a janela.',
                 'Recarregar Janela',
                 'Mais Tarde'
             );
-            
+
             if (reloadChoice === 'Recarregar Janela') {
                 vscode.commands.executeCommand('workbench.action.reloadWindow');
             }
         } else {
-            // eslint-disable-next-line no-console
-            console.error('❌ === PROBLEMAS NA VERIFICAÇÃO ===');
-            // eslint-disable-next-line no-console
-            console.error('🚫 Arquivos faltando:', verificationResult.missingFiles);
-            // eslint-disable-next-line no-console
-            console.error('⚠️ Erros encontrados:', verificationResult.errors);
-            
-            vscode.window.showErrorMessage(
-                `Configuração parcial. Problemas encontrados:\n${verificationResult.errors.join('\n')}\n\nVerifique o Developer Console (Ctrl+Shift+I) para mais detalhes.`
-            );
+            vscode.window.showErrorMessage(`Configuração parcial. Problemas encontrados:\n${verificationResult.errors.join('\n')}`);
         }
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : String(error);
-        // eslint-disable-next-line no-console
-        console.error('❌ === ERRO CRÍTICO DURANTE SETUP ===');
-        // eslint-disable-next-line no-console
-        console.error('💥 Detalhes do erro:', error);
-        // eslint-disable-next-line no-console
-        console.error('📍 Stack trace:', error instanceof Error ? error.stack : 'N/A');
-        
-        vscode.window.showErrorMessage(
-            `Erro crítico durante configuração:\n${errorMessage}\n\nVerifique o Developer Console (Ctrl+Shift+I) para mais detalhes.`
-        );
+        vscode.window.showErrorMessage(`Erro crítico durante configuração:\n${errorMessage}`);
     }
 }
 
@@ -117,14 +69,12 @@ async function collectProjectData(): Promise<ProjectData | undefined> {
 
     if (!debugPort) return undefined;
 
-    // Obter o caminho do projeto atual
     const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
     if (!workspaceFolder) {
         vscode.window.showErrorMessage(TEXTS.ERRORS.NO_WORKSPACE);
         return undefined;
     }
 
-    // Tentar ler o baseHref do angular.json
     const defaultRoute = await getBaseHrefFromAngularJson(workspaceFolder.uri.fsPath);
 
     const route = await vscode.window.showInputBox({
@@ -154,13 +104,11 @@ async function getBaseHrefFromAngularJson(projectPath: string): Promise<string |
         const angularJsonContent = fs.readFileSync(angularJsonPath, 'utf8');
         const angularJson: AngularJson = JSON.parse(angularJsonContent);
         
-        // Procurar o primeiro projeto no angular.json
         const projects = angularJson.projects;
         if (!projects) {
             return null;
         }
 
-        // Pegar o primeiro projeto disponível
         const firstProjectKey = Object.keys(projects)[0];
         if (!firstProjectKey) {
             return null;
@@ -168,27 +116,23 @@ async function getBaseHrefFromAngularJson(projectPath: string): Promise<string |
 
         const project = projects[firstProjectKey];
         
-        // Verificar nas configurações de build
         const buildConfig = project?.architect?.build?.options;
         if (buildConfig && buildConfig.baseHref) {
             return normalizeRoute(buildConfig.baseHref);
         }
 
-        // Verificar nas configurações de serve
         const serveConfig = project?.architect?.serve?.options;
         if (serveConfig && serveConfig.baseHref) {
             return normalizeRoute(serveConfig.baseHref);
         }
 
-        // Verificar em configurações de produção
         const prodConfig = project?.architect?.build?.configurations?.production;
         if (prodConfig && prodConfig.baseHref) {
             return normalizeRoute(prodConfig.baseHref);
         }
 
-    } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(`${TEXTS.ERRORS.READING_ANGULAR_JSON}`, error);
+    } catch {
+        // ignore and fallback to defaults
     }
 
     return null;
@@ -197,7 +141,6 @@ async function getBaseHrefFromAngularJson(projectPath: string): Promise<string |
 function normalizeRoute(route: string): string {
     if (!route) return route;
     
-    // Remove barra final se existir, mas mantém se for apenas "/"
     if (route.length > 1 && route.endsWith('/')) {
         return route.slice(0, -1);
     }
@@ -206,103 +149,51 @@ function normalizeRoute(route: string): string {
 }
 
 async function createConfigFiles(workspacePath: string, data: ProjectData, context: vscode.ExtensionContext): Promise<void> {
-    // eslint-disable-next-line no-console
-    console.log('📂 === CRIANDO ARQUIVOS DE CONFIGURAÇÃO ===');
-    // eslint-disable-next-line no-console
-    console.log('📂 Workspace:', workspacePath);
-    // eslint-disable-next-line no-console
-    console.log('📊 Dados do projeto:', JSON.stringify(data, null, 2));
-    
+    // creating configuration files for the project
     const vscodeDir = path.join(workspacePath, TEXTS.DETECTION.VSCODE_FOLDER);
-    
-    // eslint-disable-next-line no-console
-    console.log('📁 Diretório .vscode:', vscodeDir);
-    
-    // Criar diretório .vscode se não existir
     if (!fs.existsSync(vscodeDir)) {
-        // eslint-disable-next-line no-console
-        console.log('📁 Criando diretório .vscode...');
         try {
             fs.mkdirSync(vscodeDir, { recursive: true });
-            // eslint-disable-next-line no-console
-            console.log('✅ Diretório .vscode criado com sucesso');
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('❌ Erro ao criar diretório .vscode:', error);
-            throw error;
+        } catch {
+            throw new Error(TEXTS.ERRORS.CANNOT_CREATE_VSCODE_DIR || 'Cannot create .vscode directory');
         }
-    } else {
-        // eslint-disable-next-line no-console
-        console.log('📁 Diretório .vscode já existe');
     }
     
     // Criar diretório global para scripts da extensão (fora do projeto)
     const globalStoragePath = context.globalStorageUri.fsPath;
-    // eslint-disable-next-line no-console
-    console.log('🌐 Global storage path:', globalStoragePath);
-    
+    // prepare global storage for extension
     const angularAssistGlobalDir = path.join(globalStoragePath, 'angular-assist-automation');
     if (!fs.existsSync(angularAssistGlobalDir)) {
-        // eslint-disable-next-line no-console
-        console.log('📁 Criando diretório global Angular Assist...');
         try {
             fs.mkdirSync(angularAssistGlobalDir, { recursive: true });
-            // eslint-disable-next-line no-console
-            console.log('✅ Diretório global Angular Assist criado');
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('❌ Erro ao criar diretório global:', error);
-            throw error;
+        } catch {
+            throw new Error(TEXTS.ERRORS.CANNOT_CREATE_GLOBAL_DIR || 'Cannot create global directory');
         }
     }
     
     // Criar diretório para scripts compartilhados globalmente
     const globalScriptsDir = path.join(angularAssistGlobalDir, 'scripts');
     if (!fs.existsSync(globalScriptsDir)) {
-        // eslint-disable-next-line no-console
-        console.log('📁 Criando diretório global de scripts...');
         try {
             fs.mkdirSync(globalScriptsDir, { recursive: true });
-            // eslint-disable-next-line no-console
-            console.log('✅ Diretório global de scripts criado');
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('❌ Erro ao criar diretório de scripts:', error);
-            throw error;
+        } catch {
+            throw new Error(TEXTS.ERRORS.CANNOT_CREATE_GLOBAL_DIR || 'Cannot create global scripts directory');
         }
     }
 
     // Carregar templates do contexto da extensão
     const templatesPath = path.join(context.extensionPath, 'templates');
-    // eslint-disable-next-line no-console
-    console.log('📄 Templates path:', templatesPath);
-    
     if (!fs.existsSync(templatesPath)) {
-        const error = `Templates path não encontrado: ${templatesPath}`;
-        // eslint-disable-next-line no-console
-        console.error('❌', error);
-        // eslint-disable-next-line no-console
-        console.log('📁 Listando conteúdo do extensionPath:', context.extensionPath);
-        try {
-            const extensionContents = fs.readdirSync(context.extensionPath);
-            // eslint-disable-next-line no-console
-            console.log('📋 Conteúdo da extensão:', extensionContents);
-        } catch (listError) {
-            // eslint-disable-next-line no-console
-            console.error('❌ Erro ao listar extensionPath:', listError);
-        }
-        throw new Error(error);
+        throw new Error(`${TEXTS.ERRORS.TEMPLATE_NOT_FOUND} ${templatesPath}`);
     }
     
     try {
         // Criar ou atualizar settings.json com as configurações específicas do projeto
-        // eslint-disable-next-line no-console
-        console.log('⚙️ === CRIANDO SETTINGS.JSON ===');
+    // create or update settings.json
         await updateSettingsFile(path.join(vscodeDir, TEXTS.CONFIG_FILES.SETTINGS), data, globalScriptsDir);
         
         // Criar tasks.json
-        // eslint-disable-next-line no-console
-        console.log('📋 === CRIANDO TASKS.JSON ===');
+    // create tasks.json
         await createFileFromTemplate(
             path.join(templatesPath, TEXTS.CONFIG_FILES.TASKS),
             path.join(vscodeDir, TEXTS.CONFIG_FILES.TASKS),
@@ -311,8 +202,7 @@ async function createConfigFiles(workspacePath: string, data: ProjectData, conte
         );
 
         // Criar launch.json
-        // eslint-disable-next-line no-console
-        console.log('🚀 === CRIANDO LAUNCH.JSON ===');
+    // create launch.json
         await createFileFromTemplate(
             path.join(templatesPath, TEXTS.CONFIG_FILES.LAUNCH),
             path.join(vscodeDir, TEXTS.CONFIG_FILES.LAUNCH),
@@ -321,8 +211,7 @@ async function createConfigFiles(workspacePath: string, data: ProjectData, conte
         );
 
         // Criar keybindings.json
-        // eslint-disable-next-line no-console
-        console.log('⌨️ === CRIANDO KEYBINDINGS.JSON ===');
+    // create keybindings.json
         await createFileFromTemplate(
             path.join(templatesPath, TEXTS.CONFIG_FILES.KEYBINDINGS),
             path.join(vscodeDir, TEXTS.CONFIG_FILES.KEYBINDINGS),
@@ -330,20 +219,11 @@ async function createConfigFiles(workspacePath: string, data: ProjectData, conte
             globalScriptsDir
         );
 
-        // Copiar scripts PowerShell para o diretório global compartilhado (apenas uma vez)
+    // Copiar scripts PowerShell para o diretório global compartilhado (apenas uma vez)
     const scriptsTemplatePath = path.join(templatesPath, 'scripts');
-        // eslint-disable-next-line no-console
-        console.log('📜 === COPIANDO SCRIPTS POWERSHELL ===');
     await copyScripts(scriptsTemplatePath, globalScriptsDir);
-        
-        // eslint-disable-next-line no-console
-        console.log('✅ === TODOS OS ARQUIVOS CRIADOS COM SUCESSO! ===');
-    } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('❌ === ERRO DURANTE CRIAÇÃO DE ARQUIVOS ===');
-        // eslint-disable-next-line no-console
-        console.error('💥 Detalhes:', error);
-        throw error;
+    } catch {
+        throw new Error(TEXTS.ERRORS.SETUP_FAILED || 'Setup failed');
     }
 }
 
@@ -373,18 +253,12 @@ async function verifyCreatedFiles(workspacePath: string, data: ProjectData): Pro
         TEXTS.CONFIG_FILES.KEYBINDINGS
     ];
 
-    // eslint-disable-next-line no-console
-    console.log('🔍 Verificando arquivos em:', vscodeDir);
-
     // Verificar se cada arquivo foi criado
     for (const fileName of expectedFiles) {
         const filePath = path.join(vscodeDir, fileName);
         if (fs.existsSync(filePath)) {
             result.filesCreated.push(fileName);
-            // eslint-disable-next-line no-console
-            console.log(`✅ ${fileName} - CRIADO`);
             
-            // Verificar conteúdo específico para cada arquivo
             try {
                 const content = fs.readFileSync(filePath, 'utf8');
                 
@@ -401,12 +275,10 @@ async function verifyCreatedFiles(workspacePath: string, data: ProjectData): Pro
                             config.name.includes(data.projectName) && config.name.includes('Chrome Debug')
                         );
                         result.debugConfigName = debugConfig?.name;
-                        // eslint-disable-next-line no-console
-                        console.log(`🎯 Debug config encontrada: ${debugConfig?.name}`);
+                        
                     } else {
                         result.errors.push(`launch.json não contém configuração de debug para ${data.projectName}`);
-                        // eslint-disable-next-line no-console
-                        console.warn(`⚠️ launch.json sem debug config para ${data.projectName}`);
+                        
                     }
                 } else if (fileName === TEXTS.CONFIG_FILES.SETTINGS) {
                     const settings = JSON.parse(content);
@@ -415,11 +287,9 @@ async function verifyCreatedFiles(workspacePath: string, data: ProjectData): Pro
                     
                     if (!hasAngularAssistConfig) {
                         result.errors.push(`settings.json não contém configuração Angular Assist para ${data.projectName}`);
-                        // eslint-disable-next-line no-console
-                        console.warn(`⚠️ settings.json sem config Angular Assist para ${data.projectName}`);
+                        
                     } else {
-                        // eslint-disable-next-line no-console
-                        console.log(`✅ settings.json configurado para ${data.projectName}`);
+                        
                     }
                 } else if (fileName === TEXTS.CONFIG_FILES.TASKS) {
                     const tasksConfig = JSON.parse(content);
@@ -430,41 +300,25 @@ async function verifyCreatedFiles(workspacePath: string, data: ProjectData): Pro
                     
                     if (!hasAngularAssistTasks) {
                         result.errors.push(`tasks.json não contém tarefas Angular Assist para ${data.projectName}`);
-                        // eslint-disable-next-line no-console
-                        console.warn(`⚠️ tasks.json sem tarefas Angular Assist para ${data.projectName}`);
+                        
                     } else {
-                        const taskCount = tasksConfig.tasks.filter((task: {label: string}) => 
-                            task.label.includes(data.projectName) || task.label.includes('Angular Assist')
-                        ).length;
-                        // eslint-disable-next-line no-console
-                        console.log(`✅ tasks.json configurado com ${taskCount} tarefas Angular Assist`);
+                        // calculate task count if needed later
                     }
                 }
             } catch (parseError) {
                 result.errors.push(`Erro ao analisar ${fileName}: ${parseError}`);
-                // eslint-disable-next-line no-console
-                console.error(`❌ Erro ao analisar ${fileName}:`, parseError);
+                
             }
         } else {
             result.missingFiles.push(fileName);
             result.errors.push(`Arquivo ${fileName} não foi criado`);
-            // eslint-disable-next-line no-console
-            console.error(`❌ ${fileName} - NÃO ENCONTRADO`);
+            
         }
     }
 
     result.success = result.missingFiles.length === 0 && result.errors.length === 0;
     
-    // eslint-disable-next-line no-console
-    console.log('📊 RESUMO DA VERIFICAÇÃO:');
-    // eslint-disable-next-line no-console
-    console.log(`   ✅ Arquivos criados: ${result.filesCreated.length}/${expectedFiles.length}`);
-    // eslint-disable-next-line no-console
-    console.log(`   ❌ Arquivos faltando: ${result.missingFiles.length}`);
-    // eslint-disable-next-line no-console
-    console.log(`   ⚠️ Erros encontrados: ${result.errors.length}`);
-    // eslint-disable-next-line no-console
-    console.log(`   🎯 Debug config: ${result.debugConfigFound ? 'SIM' : 'NÃO'}`);
+    // verification summary is returned to caller
 
     return result;
 }
@@ -490,9 +344,8 @@ async function updateSettingsFile(settingsPath: string, data: ProjectData, globa
     if (fs.existsSync(settingsPath)) {
         try {
             existingSettings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error(`${TEXTS.ERRORS.READING_SETTINGS_JSON}`, error);
+        } catch {
+            // ignore
         }
     }
     
@@ -512,8 +365,9 @@ async function updateSettingsFile(settingsPath: string, data: ProjectData, globa
 }
 
 async function copyScripts(scriptsPath: string, destDir: string): Promise<void> {
-    // Always copy from base templates/scripts (scripts names are stable)
-    const basePath = scriptsPath;
+    const locale = getLocale();
+    const localeScriptsPath = path.join(scriptsPath, locale);
+    const basePath = fs.existsSync(localeScriptsPath) ? localeScriptsPath : scriptsPath;
 
     const scriptFiles = [
         TEXTS.SCRIPT_FILES.START_VSCODE,
@@ -524,11 +378,10 @@ async function copyScripts(scriptsPath: string, destDir: string): Promise<void> 
     ];
 
     for (const scriptFile of scriptFiles) {
-    const sourcePath = path.join(basePath, scriptFile);
+        const sourcePath = path.join(basePath, scriptFile);
         const destPath = path.join(destDir, scriptFile);
         
-        // Copia o arquivo se não existir no destino
-    if (fs.existsSync(sourcePath) && !fs.existsSync(destPath)) {
+        if (fs.existsSync(sourcePath) && !fs.existsSync(destPath)) {
             fs.copyFileSync(sourcePath, destPath);
         }
     }
@@ -536,40 +389,26 @@ async function copyScripts(scriptsPath: string, destDir: string): Promise<void> 
 
 async function createFileFromTemplate(templatePath: string, destPath: string, data: ProjectData, globalScriptsDir?: string): Promise<void> {
     if (!fs.existsSync(templatePath)) {
-        // eslint-disable-next-line no-console
-        console.error(`${TEXTS.ERRORS.TEMPLATE_NOT_FOUND} ${templatePath}`);
-        return;
+        throw new Error(`${TEXTS.ERRORS.TEMPLATE_NOT_FOUND} ${templatePath}`);
     }
 
-    // eslint-disable-next-line no-console
-    console.log(`📄 Processando template: ${path.basename(templatePath)}`);
-
-    // Ler o conteúdo do template
     let content = fs.readFileSync(templatePath, 'utf8');
 
-    // Substituir as variáveis no template
     content = content
         .replace(/\[NOME_PROJETO\]/g, data.projectName)
         .replace(/\[PORTA\]/g, data.port)
         .replace(/\[PORTA_DEBUG\]/g, data.debugPort)
         .replace(/\[ROTA_APLICACAO\]/g, data.route);
 
-    // Validar se é um JSON válido antes de continuar
     if (destPath.endsWith('.json')) {
         try {
             JSON.parse(content);
-            // eslint-disable-next-line no-console
-            console.log(`✅ JSON válido para ${path.basename(destPath)}`);
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error(`❌ JSON inválido para ${path.basename(destPath)}:`, error);
+        } catch {
             return;
         }
     }
 
-    // Se for um arquivo que usa scripts, substituir o caminho dos scripts pelo caminho global
     if (globalScriptsDir && (destPath.endsWith('tasks.json') || destPath.endsWith('launch.json'))) {
-        // Substituir referências ao caminho dos scripts para usar o caminho global
         const normalizedGlobalPath = globalScriptsDir.replace(/\\/g, '\\\\');
         content = content.replace(
             /\$\{workspaceFolder\}\\\.vscode\\angular-assist-automation\\scripts\\/g, 
@@ -577,13 +416,12 @@ async function createFileFromTemplate(templatePath: string, destPath: string, da
         );
     }
 
-    // Verificar se o arquivo já existe
     const fileExists = fs.existsSync(destPath);
     
     // Se for um arquivo tasks.json, launch.json ou keybindings.json que já existe,
     // precisamos mesclá-lo em vez de substituí-lo
     if (fileExists && (destPath.endsWith('tasks.json') || destPath.endsWith('launch.json') || destPath.endsWith('keybindings.json'))) {
-        try {
+    try {
             const existingContent = fs.readFileSync(destPath, 'utf8');
             const existingJson = JSON.parse(existingContent);
             const newJson = JSON.parse(content);
@@ -607,8 +445,7 @@ async function createFileFromTemplate(templatePath: string, destPath: string, da
                 tasksJson.tasks = [...tasksJson.tasks, ...newTasksJson.tasks];
                 updatedJson = tasksJson;
                 
-                // eslint-disable-next-line no-console
-                console.log(`✅ Tasks mescladas: ${tasksJson.tasks.length} tarefas total`);
+                // tasks merged
             } else if (destPath.endsWith('launch.json')) {
                 // Mescla configurações de lançamento (launch.json)
                 const launchJson = updatedJson as LaunchJson;
@@ -620,47 +457,35 @@ async function createFileFromTemplate(templatePath: string, destPath: string, da
                     !config.name.includes('Chrome Debug')
                 );
                 
-                // Adicionar novas configurações
                 const newLaunchJson = newJson as LaunchJson;
                 launchJson.configurations = [...launchJson.configurations, ...newLaunchJson.configurations];
                 updatedJson = launchJson;
                 
-                // eslint-disable-next-line no-console
-                console.log(`✅ Launch configs mescladas: ${launchJson.configurations.length} configurações total`);
+                // launch configs merged
             } else if (destPath.endsWith('keybindings.json')) {
                 // Para keybindings.json, simplesmente adicionar as novas sem remover existentes
                 const mergedJson = Array.isArray(existingJson) ? [...existingJson] : [];
                 
-                // Filtrar para remover keybindings duplicados
                 const existingKeys = new Set(mergedJson.map((key: VSCodeKeybinding) => key.command));
                 const newKeybindings = (newJson as VSCodeKeybinding[]).filter((key: VSCodeKeybinding) => !existingKeys.has(key.command));
                 
                 updatedJson = [...mergedJson, ...newKeybindings];
                 
-                // eslint-disable-next-line no-console
-                console.log(`✅ Keybindings mesclados: ${(updatedJson as VSCodeKeybinding[]).length} atalhos total`);
+                // keybindings merged
             }
 
             // Validar JSON final antes de escrever
             const finalContent = JSON.stringify(updatedJson, null, 2);
             JSON.parse(finalContent); // Validação
-            
+
             // Escrever o arquivo JSON atualizado
             fs.writeFileSync(destPath, finalContent, 'utf8');
-            // eslint-disable-next-line no-console
-            console.log(`✅ Arquivo ${path.basename(destPath)} criado/atualizado com sucesso`);
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error(`${TEXTS.ERRORS.FILE_MERGE_ERROR} ${destPath}:`, error);
+        } catch {
             // Fallback: criar o arquivo como novo
             fs.writeFileSync(destPath, content, 'utf8');
-            // eslint-disable-next-line no-console
-            console.log(`⚠️ Fallback: arquivo ${path.basename(destPath)} criado como novo`);
         }
     } else {
         // Criar o arquivo normalmente se não existir
         fs.writeFileSync(destPath, content, 'utf8');
-        // eslint-disable-next-line no-console
-        console.log(`✅ Arquivo ${path.basename(destPath)} criado com sucesso`);
     }
 }
