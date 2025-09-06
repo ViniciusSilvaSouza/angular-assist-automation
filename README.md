@@ -53,6 +53,11 @@ Angular Assist fully automates environment setup by creating:
 - Chrome debugging auto-configured
 - Restart projects without losing context
 
+### 🌐 Language support
+- Default language: English (en-US)
+- Available languages: English (en-US) and Portuguese (pt-BR)
+- Change via setting `angular-assist.language` or Command Palette: "Angular Assist: Change Language"
+
 ---
 
 ## 📥 Installation
@@ -181,7 +186,7 @@ During setup, you'll configure:
 
 ---
 
-## ⚙️ Configurações
+## ⚙️ Settings
 
 ### 🌐 Extension Language
 Default language is English. Change it:

@@ -55,6 +55,11 @@ O Angular Assist automatiza completamente a configuração do ambiente, criando:
 - Debug no Chrome configurado automaticamente
 - Reinício de projetos sem perder contexto
 
+### 🌐 Suporte a idiomas
+- Idioma padrão: Inglês (en-US)
+- Idiomas disponíveis: Inglês (en-US) e Português (pt-BR)
+- Altere via configuração `angular-assist.language` ou pelo comando "Angular Assist: Change Language"
+
 ---
 
 ## 📥 Instalação
