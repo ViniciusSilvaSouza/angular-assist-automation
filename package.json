@@ -2,9 +2,9 @@
   "name": "angular-assist-automation",
   "displayName": "Angular Assist - Environment Automation",
   "description": "Automação completa de ambiente para projetos Angular com configuração inteligente e scripts otimizados",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "icon": "images/icon.png",
-  "publisher": "vinicius-souza",
+  "publisher": "vinicius-soares-souza",
   "galleryBanner": {
     "color": "#1e1e1e",
     "theme": "dark"
@@ -41,15 +41,40 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Angular Assist - Environment Automation",
+      "properties": {
+        "angular-assist.language": {
+          "type": "string",
+          "default": "en-US",
+          "enum": ["pt-BR", "en-US"],
+          "enumDescriptions": [
+            "Português (Brasil)",
+            "English (United States)"
+          ],
+          "description": "Idioma usado pela extensão para mensagens e prompts."
+        },
+        "angular-assist.debug": {
+          "type": "boolean",
+          "default": false,
+          "description": "Ativa logs de diagnóstico no Output Channel 'Angular Assist'."
+        }
+      }
+    },
     "commands": [
       {
         "command": "angular-assist.detect",
-        "title": "🚀 Setup: Angular Assist: Detectar Projeto Angular",
+  "title": "🚀 Setup: Angular Assist: Detect Angular Project",
         "category": "Angular Assist"
       },
       {
         "command": "angular-assist.setup",
-        "title": "🚀 Setup: Angular Assist: Configurar Automação",
+  "title": "🚀 Setup: Angular Assist: Configure Automation",
+        "category": "Angular Assist"
+      },
+      {
+        "command": "angular-assist.changeLanguage",
+        "title": "🌐 Angular Assist: Change Language",
         "category": "Angular Assist"
       }
     ]
