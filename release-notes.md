@@ -1,3 +1,23 @@
+## 🚀 Angular Assist v1.0.2
+
+### Destaques
+- Suporte a inglês (en-US) e comando para trocar idioma
+- Textos centralizados (i18n) e padrão de locale em toda a extensão
+- Remoção de console.* com OutputChannel (logger) e flag angular-assist.debug
+- Suporte a múltiplas automações no mesmo workspace (merge não-destrutivo de tasks/launch)
+- Comportamento F5/Shift+F5:
+	- F5 repetido: ignora novo start se a porta já estiver ocupada (sem prompt do Angular)
+	- Shift+F5: encerra servidor, Chrome do projeto e terminais relacionados (postDebugTask)
+- Scripts PowerShell aprimorados (kill por porta/Node/webpack/Chrome; correção de variável $PID)
+- Documentação atualizada (README.md e README.pt-BR.md)
+
+### Instalação
+1. Baixe o arquivo `angular-assist-automation-1.0.2.vsix`
+2. No VS Code: Ctrl+Shift+P → Extensions: Install from VSIX...
+3. Selecione o arquivo baixado
+
+---
+
 ## 🎉 Angular Assist v1.0.0 - Primeira Release!
 
 ### 📥 Instalação
