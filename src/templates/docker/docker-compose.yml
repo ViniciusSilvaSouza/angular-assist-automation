@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  [NOME_PROJETO]:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "[PORTA]:80"
+    restart: always
