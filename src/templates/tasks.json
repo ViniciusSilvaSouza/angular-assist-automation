@@ -4,21 +4,43 @@
         {
             "label": "Start Projeto - [NOME_PROJETO] (Angular Assist)",
             "type": "shell",
-            "command": "powershell.exe",
-            "args": [
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
-                "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}\\start-projeto-vscode.ps1",
-                "-ProjectName",
-                "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
-                "-Port",
-                "${config:angular-assist.automation.[NOME_PROJETO].port}",
-                "-DebugPort",
-                "${config:angular-assist.automation.[NOME_PROJETO].debugPort}",
-                "-Route",
-                "${config:angular-assist.automation.[NOME_PROJETO].route}"
-            ],
+            "windows": {
+                "command": "powershell.exe",
+                "args": [
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}\\windows\\start-projeto-vscode.ps1",
+                    "-ProjectName",
+                    "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                    "-Port",
+                    "${config:angular-assist.automation.[NOME_PROJETO].port}",
+                    "-DebugPort",
+                    "${config:angular-assist.automation.[NOME_PROJETO].debugPort}",
+                    "-Route",
+                    "${config:angular-assist.automation.[NOME_PROJETO].route}"
+                ]
+            },
+            "linux": {
+                "command": "bash",
+                "args": [
+                    "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}/unix/start-projeto-vscode.sh",
+                    "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].port}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].debugPort}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].route}"
+                ]
+            },
+            "osx": {
+                "command": "bash",
+                "args": [
+                    "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}/unix/start-projeto-vscode.sh",
+                    "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].port}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].debugPort}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].route}"
+                ]
+            },
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -58,21 +80,43 @@
         {
             "label": "🔄 Restart Projeto - [NOME_PROJETO]",
             "type": "shell",
-            "command": "powershell.exe",
-            "args": [
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
-                "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}\\restart-projeto.ps1",
-                "-ProjectName",
-                "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
-                "-Port",
-                "${config:angular-assist.automation.[NOME_PROJETO].port}",
-                "-DebugPort",
-                "${config:angular-assist.automation.[NOME_PROJETO].debugPort}",
-                "-Route",
-                "${config:angular-assist.automation.[NOME_PROJETO].route}"
-            ],
+            "windows": {
+                "command": "powershell.exe",
+                "args": [
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}\\windows\\restart-projeto.ps1",
+                    "-ProjectName",
+                    "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                    "-Port",
+                    "${config:angular-assist.automation.[NOME_PROJETO].port}",
+                    "-DebugPort",
+                    "${config:angular-assist.automation.[NOME_PROJETO].debugPort}",
+                    "-Route",
+                    "${config:angular-assist.automation.[NOME_PROJETO].route}"
+                ]
+            },
+            "linux": {
+                "command": "bash",
+                "args": [
+                    "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}/unix/restart-projeto.sh",
+                    "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].port}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].debugPort}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].route}"
+                ]
+            },
+            "osx": {
+                "command": "bash",
+                "args": [
+                    "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}/unix/restart-projeto.sh",
+                    "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].port}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].debugPort}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].route}"
+                ]
+            },
             "group": "build",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -90,17 +134,35 @@
         {
             "label": "🛑 Stop All Processes",
             "type": "shell",
-            "command": "powershell.exe",
-            "args": [
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
-                "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}\\stop-all-processes.ps1",
-                "-ProjectName",
-                "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
-                "-Port",
-                "${config:angular-assist.automation.[NOME_PROJETO].port}"
-            ],
+            "windows": {
+                "command": "powershell.exe",
+                "args": [
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}\\windows\\stop-all-processes.ps1",
+                    "-ProjectName",
+                    "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                    "-Port",
+                    "${config:angular-assist.automation.[NOME_PROJETO].port}"
+                ]
+            },
+            "linux": {
+                "command": "bash",
+                "args": [
+                    "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}/unix/stop-all-processes.sh",
+                    "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].port}"
+                ]
+            },
+            "osx": {
+                "command": "bash",
+                "args": [
+                    "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}/unix/stop-all-processes.sh",
+                    "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].port}"
+                ]
+            },
             "group": "build",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -118,17 +180,35 @@
         {
             "label": "🌐 Clean Chrome [NOME_PROJETO]",
             "type": "shell",
-            "command": "powershell.exe",
-            "args": [
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
-                "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}\\clean-chrome.ps1",
-                "-ProjectName",
-                "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
-                "-Route",
-                "${config:angular-assist.automation.[NOME_PROJETO].route}"
-            ],
+            "windows": {
+                "command": "powershell.exe",
+                "args": [
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}\\windows\\clean-chrome.ps1",
+                    "-ProjectName",
+                    "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                    "-Route",
+                    "${config:angular-assist.automation.[NOME_PROJETO].route}"
+                ]
+            },
+            "linux": {
+                "command": "bash",
+                "args": [
+                    "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}/unix/clean-chrome.sh",
+                    "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].route}"
+                ]
+            },
+            "osx": {
+                "command": "bash",
+                "args": [
+                    "${config:angular-assist.automation.[NOME_PROJETO].globalScriptsPath}/unix/clean-chrome.sh",
+                    "${config:angular-assist.automation.[NOME_PROJETO].projectName}",
+                    "${config:angular-assist.automation.[NOME_PROJETO].route}"
+                ]
+            },
             "group": "build",
             "options": {
                 "cwd": "${workspaceFolder}"

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Assist Setup</title>
+    <style>
+        body {
+            font-family: var(--vscode-font-family);
+            padding: 20px;
+            color: var(--vscode-editor-foreground);
+            background-color: var(--vscode-editor-background);
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: var(--vscode-editor-foreground);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            background-color: var(--vscode-input-background);
+            color: var(--vscode-input-foreground);
+            border: 1px solid var(--vscode-input-border);
+            border-radius: 2px;
+        }
+        input:focus {
+            outline: 1px solid var(--vscode-focusBorder);
+        }
+        button {
+            padding: 10px 15px;
+            background-color: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: var(--vscode-button-hoverBackground);
+        }
+        .actions {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Angular Assist Automation Setup</h2>
+        <form id="setupForm">
+            <div class="form-group">
+                <label for="projectName">Nome do Projeto</label>
+                <input type="text" id="projectName" name="projectName" required placeholder="ex: meu-projeto">
+            </div>
+
+            <div class="form-group">
+                <label for="port">Porta (Serve)</label>
+                <input type="number" id="port" name="port" value="4200" required>
+            </div>
+
+            <div class="form-group">
+                <label for="debugPort">Porta Debug (Chrome)</label>
+                <input type="number" id="debugPort" name="debugPort" value="9222" required>
+            </div>
+
+            <div class="form-group">
+                <label for="route">Rota da Aplicação</label>
+                <input type="text" id="route" name="route" placeholder="ex: /app" value="">
+            </div>
+
+            <div class="actions">
+                <button type="submit">Gerar Configuração</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const vscode = acquireVsCodeApi();
+
+        // Handle messages sent from the extension
+        window.addEventListener('message', event => {
+            const message = event.data;
+            switch (message.command) {
+                case 'setDefaults':
+                    if(message.projectName) document.getElementById('projectName').value = message.projectName;
+                    if(message.route) document.getElementById('route').value = message.route;
+                    break;
+            }
+        });
+
+        // Submit form
+        document.getElementById('setupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const projectName = document.getElementById('projectName').value;
+            const port = document.getElementById('port').value;
+            const debugPort = document.getElementById('debugPort').value;
+            const route = document.getElementById('route').value;
+
+            vscode.postMessage({
+                command: 'submit',
+                data: {
+                    projectName,
+                    port,
+                    debugPort,
+                    route
+                }
+            });
+        });
+
+        // Tell extension we are ready
+        vscode.postMessage({ command: 'ready' });
+    </script>
+</body>
+</html>

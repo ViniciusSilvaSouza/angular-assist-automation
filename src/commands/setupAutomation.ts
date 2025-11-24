@@ -3,8 +3,28 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { TEXTS, buildText, getLocale } from '../constants/texts';
 import { ProjectData, AngularAssistSettings, AngularJson, TasksJson, LaunchJson, VSCodeKeybinding } from '../types';
+import { checkPrerequisites } from '../utils/prerequisites';
+import { SetupPanel } from '../panels/SetupPanel';
+import { normalizeRoute } from '../utils/routeUtils';
 
 export async function setupAutomation(context: vscode.ExtensionContext): Promise<void> {
+    // Verificar pré-requisitos
+    const prereqs = await checkPrerequisites();
+    if (!prereqs.node) {
+        vscode.window.showErrorMessage("Node.js não encontrado. Por favor, instale o Node.js para usar esta extensão.");
+        return;
+    }
+    if (!prereqs.angularCli) {
+        const install = "Instalar Angular CLI";
+        const choice = await vscode.window.showWarningMessage(
+            "Angular CLI não detectado globalmente. Algumas automações podem falhar.",
+            install
+        );
+        if (choice === install) {
+            vscode.env.openExternal(vscode.Uri.parse('https://angular.io/cli'));
+        }
+    }
+
     const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
     if (!workspaceFolder) {
         const errorMsg = TEXTS.ERRORS.NO_WORKSPACE;
@@ -12,85 +32,55 @@ export async function setupAutomation(context: vscode.ExtensionContext): Promise
         return;
     }
 
-    try {
-        const projectData = await collectProjectData();
-        if (!projectData) {
-            vscode.window.showWarningMessage(TEXTS.MESSAGES.SETUP_CANCELLED_BY_USER || 'Configuração cancelada pelo usuário.');
-            return;
-        }
-
-        await createConfigFiles(workspaceFolder.uri.fsPath, projectData, context);
-
-        const verificationResult = await verifyCreatedFiles(workspaceFolder.uri.fsPath, projectData);
-
-        if (verificationResult.success) {
-            const successMsg = buildText.setupComplete(projectData.projectName);
-            vscode.window.showInformationMessage(
-                `${successMsg}\n\n🔍 Verificar:\n• Painel "Run and Debug" (Ctrl+Shift+D)\n• Tarefas no Terminal (Ctrl+Shift+P > Tasks)\n• Configuração criada: ${verificationResult.debugConfigName}`
-            );
-
-            const reloadChoice = await vscode.window.showInformationMessage(
-                'Para garantir que todas as configurações sejam aplicadas, recomenda-se recarregar a janela.',
-                'Recarregar Janela',
-                'Mais Tarde'
-            );
-
-            if (reloadChoice === 'Recarregar Janela') {
-                vscode.commands.executeCommand('workbench.action.reloadWindow');
-            }
-        } else {
-            vscode.window.showErrorMessage(`Configuração parcial. Problemas encontrados:\n${verificationResult.errors.join('\n')}`);
-        }
-    } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        vscode.window.showErrorMessage(`Erro crítico durante configuração:\n${errorMessage}`);
-    }
-}
-
-async function collectProjectData(): Promise<ProjectData | undefined> {
-    const projectName = await vscode.window.showInputBox({
-        prompt: TEXTS.PROMPTS.PROJECT_NAME.prompt,
-        placeHolder: TEXTS.PROMPTS.PROJECT_NAME.placeholder
-    });
-
-    if (!projectName) return undefined;
-
-    const port = await vscode.window.showInputBox({
-        prompt: TEXTS.PROMPTS.SERVER_PORT.prompt,
-        value: TEXTS.PROMPTS.SERVER_PORT.defaultValue
-    });
-
-    if (!port) return undefined;
-
-    const debugPort = await vscode.window.showInputBox({
-        prompt: TEXTS.PROMPTS.DEBUG_PORT.prompt,
-        value: TEXTS.PROMPTS.DEBUG_PORT.defaultValue
-    });
-
-    if (!debugPort) return undefined;
-
-    const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
-    if (!workspaceFolder) {
-        vscode.window.showErrorMessage(TEXTS.ERRORS.NO_WORKSPACE);
-        return undefined;
-    }
-
+    // Coletar dados padrão
     const defaultRoute = await getBaseHrefFromAngularJson(workspaceFolder.uri.fsPath);
+    let defaultProjectName = '';
+    try {
+        const packageJson = JSON.parse(fs.readFileSync(path.join(workspaceFolder.uri.fsPath, 'package.json'), 'utf8'));
+        if (packageJson.name) defaultProjectName = packageJson.name;
+    } catch {}
 
-    const route = await vscode.window.showInputBox({
-        prompt: TEXTS.PROMPTS.APPLICATION_ROUTE.prompt,
-        value: defaultRoute || TEXTS.PROMPTS.APPLICATION_ROUTE.defaultValue
-    });
-
-    if (route === undefined) return undefined;
-
-    return {
-        projectName,
-        port,
-        debugPort,
-        route,
-        projectPath: workspaceFolder.uri.fsPath
+    const defaults = {
+        projectName: defaultProjectName,
+        route: defaultRoute || ''
     };
+
+    // Abrir Webview
+    SetupPanel.createOrShow(context.extensionUri, defaults, async (data: ProjectData) => {
+        try {
+            // Completar dados com path do projeto que não vem da UI
+            const projectData = {
+                ...data,
+                projectPath: workspaceFolder.uri.fsPath
+            };
+
+            await createConfigFiles(workspaceFolder.uri.fsPath, projectData, context);
+
+            const verificationResult = await verifyCreatedFiles(workspaceFolder.uri.fsPath, projectData);
+
+            if (verificationResult.success) {
+                const successMsg = buildText.setupComplete(projectData.projectName);
+                vscode.window.showInformationMessage(
+                    `${successMsg}\n\n🔍 Verificar:\n• Painel "Run and Debug" (Ctrl+Shift+D)\n• Tarefas no Terminal (Ctrl+Shift+P > Tasks)\n• Configuração criada: ${verificationResult.debugConfigName}`
+                );
+
+                const reloadChoice = await vscode.window.showInformationMessage(
+                    'Para garantir que todas as configurações sejam aplicadas, recomenda-se recarregar a janela.',
+                    'Recarregar Janela',
+                    'Mais Tarde'
+                );
+
+                if (reloadChoice === 'Recarregar Janela') {
+                    vscode.commands.executeCommand('workbench.action.reloadWindow');
+                }
+            } else {
+                vscode.window.showErrorMessage(`Configuração parcial. Problemas encontrados:\n${verificationResult.errors.join('\n')}`);
+            }
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            vscode.window.showErrorMessage(`Erro crítico durante configuração:\n${errorMessage}`);
+        }
+    });
 }
 
 async function getBaseHrefFromAngularJson(projectPath: string): Promise<string | null> {
@@ -136,16 +126,6 @@ async function getBaseHrefFromAngularJson(projectPath: string): Promise<string |
     }
 
     return null;
-}
-
-function normalizeRoute(route: string): string {
-    if (!route) return route;
-    
-    if (route.length > 1 && route.endsWith('/')) {
-        return route.slice(0, -1);
-    }
-    
-    return route;
 }
 
 async function createConfigFiles(workspacePath: string, data: ProjectData, context: vscode.ExtensionContext): Promise<void> {
@@ -219,7 +199,7 @@ async function createConfigFiles(workspacePath: string, data: ProjectData, conte
             globalScriptsDir
         );
 
-    // Copiar scripts PowerShell para o diretório global compartilhado (apenas uma vez)
+    // Copiar scripts PowerShell e Bash para o diretório global compartilhado
     const scriptsTemplatePath = path.join(templatesPath, 'scripts');
     await copyScripts(scriptsTemplatePath, globalScriptsDir);
     } catch {
@@ -365,24 +345,37 @@ async function updateSettingsFile(settingsPath: string, data: ProjectData, globa
 }
 
 async function copyScripts(scriptsPath: string, destDir: string): Promise<void> {
-    const locale = getLocale();
-    const localeScriptsPath = path.join(scriptsPath, locale);
-    const basePath = fs.existsSync(localeScriptsPath) ? localeScriptsPath : scriptsPath;
+    // Copiar pasta windows
+    const windowsSrc = path.join(scriptsPath, 'windows');
+    const windowsDest = path.join(destDir, 'windows');
+    if (fs.existsSync(windowsSrc)) {
+        if (!fs.existsSync(windowsDest)) {
+            fs.mkdirSync(windowsDest, { recursive: true });
+        }
 
-    const scriptFiles = [
-        TEXTS.SCRIPT_FILES.START_VSCODE,
-        TEXTS.SCRIPT_FILES.START_PROJECT,
-        TEXTS.SCRIPT_FILES.RESTART_PROJECT,
-        TEXTS.SCRIPT_FILES.STOP_ALL_PROCESSES,
-        TEXTS.SCRIPT_FILES.CLEAN_CHROME
-    ];
+        const files = fs.readdirSync(windowsSrc);
+        for (const file of files) {
+            fs.copyFileSync(path.join(windowsSrc, file), path.join(windowsDest, file));
+        }
+    }
 
-    for (const scriptFile of scriptFiles) {
-        const sourcePath = path.join(basePath, scriptFile);
-        const destPath = path.join(destDir, scriptFile);
+    // Copiar pasta unix
+    const unixSrc = path.join(scriptsPath, 'unix');
+    const unixDest = path.join(destDir, 'unix');
+    if (fs.existsSync(unixSrc)) {
+        if (!fs.existsSync(unixDest)) {
+            fs.mkdirSync(unixDest, { recursive: true });
+        }
         
-        if (fs.existsSync(sourcePath) && !fs.existsSync(destPath)) {
-            fs.copyFileSync(sourcePath, destPath);
+        const files = fs.readdirSync(unixSrc);
+        for (const file of files) {
+            fs.copyFileSync(path.join(unixSrc, file), path.join(unixDest, file));
+            // Tentar dar permissão de execução (só funciona em OS unix-like)
+            try {
+                fs.chmodSync(path.join(unixDest, file), '755');
+            } catch {
+                // Ignore se estiver no Windows
+            }
         }
     }
 }
